@@ -17,9 +17,9 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
 
   locales: {
     '/': {
-      lang: 'zh-CN',
-      title: "Evan's blog",
-      description: 'web前端技术博客,专注web前端学习与总结。JavaScript,js,ES6,TypeScript,vue,React,python,css3,html5,Node,git,github等技术文章。',
+      lang: 'en-US',
+      title: "VDone Demo",
+      description: 'A live demo of the VDone theme for VuePress. Knowledge base, documentation and blog.',
     }
   },
   base: '/vdone/', // Required for GitHub Pages project site (justskiv.github.io/vdone)
@@ -28,32 +28,32 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
   themeConfig: {
     // Navigation
     nav: [
-      { text: '首页', link: '/' },
+      { text: 'Home', link: '/' },
       {
-        text: '前端',
+        text: 'Frontend',
         link: '/web/', // directory page link, vdone theme config item for two-level nav
         items: [
           // Note: all link values below are defined as permalinks in md file frontmatter
           {
-            text: '前端文章',
+            text: 'Articles',
             items: [
               { text: 'JavaScript', link: '/pages/8143cc480faf9a11/' },
             ],
           },
           {
-            text: '学习笔记',
+            text: 'Study Notes',
             items: [
-              { text: '《JavaScript教程》', link: '/note/javascript/' },
-              { text: '《JavaScript高级程序设计》', link: '/note/js/' },
-              { text: '《ES6 教程》', link: '/note/es6/' },
-              { text: '《Vue》', link: '/note/vue/' },
-              { text: '《React》', link: '/note/react/' },
+              { text: 'JavaScript Tutorial', link: '/note/javascript/' },
+              { text: 'Professional JavaScript', link: '/note/js/' },
+              { text: 'ES6 Tutorial', link: '/note/es6/' },
+              { text: 'Vue', link: '/note/vue/' },
+              { text: 'React', link: '/note/react/' },
               {
-                text: '《TypeScript 从零实现 axios》',
+                text: 'TypeScript: Build Axios from Scratch',
                 link: '/note/typescript-axios/',
               },
               {
-                text: '《Git》',
+                text: 'Git',
                 link: '/note/git/',
               },
               {
@@ -61,7 +61,7 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
                 link: '/pages/51afd6/',
               },
               {
-                text: 'JS设计模式总结',
+                text: 'JS Design Patterns',
                 link: '/pages/4643cd/',
               },
             ],
@@ -69,7 +69,7 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
         ],
       },
       {
-        text: '页面',
+        text: 'UI & Layout',
         link: '/ui/',
         items: [
           { text: 'HTML', link: '/pages/8309a5b876fc95e3/' },
@@ -77,38 +77,38 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
         ],
       },
       {
-        text: '技术',
+        text: 'Technology',
         link: '/technology/',
         items: [
-          { text: '技术文档', link: '/pages/9a7ee40fc232253e/' },
-          { text: 'GitHub技巧', link: '/pages/4c778760be26d8b3/' },
-          { text: 'Nodejs', link: '/pages/117708e0af7f0bd9/' },
-          { text: '博客搭建', link: '/pages/41f87d890d0a02af/' },
+          { text: 'Technical Docs', link: '/pages/9a7ee40fc232253e/' },
+          { text: 'GitHub Tips', link: '/pages/4c778760be26d8b3/' },
+          { text: 'Node.js', link: '/pages/117708e0af7f0bd9/' },
+          { text: 'Blog Setup', link: '/pages/41f87d890d0a02af/' },
         ],
       },
       {
-        text: '更多',
+        text: 'More',
         link: '/more/',
         items: [
-          { text: '学习', link: '/pages/f2a556/' },
-          { text: '面试', link: '/pages/aea6571b7a8bae86/' },
-          { text: '心情杂货', link: '/pages/2d615df9a36a98ed/' },
-          { text: '实用技巧', link: '/pages/baaa02/' },
-          { text: '友情链接', link: '/friends/' },
+          { text: 'Learning', link: '/pages/f2a556/' },
+          { text: 'Interviews', link: '/pages/aea6571b7a8bae86/' },
+          { text: 'Miscellaneous', link: '/pages/2d615df9a36a98ed/' },
+          { text: 'Practical Tips', link: '/pages/baaa02/' },
+          { text: 'Friends', link: '/friends/' },
         ],
       },
-      { text: '关于', link: '/about/' },
+      { text: 'About', link: '/about/' },
       {
-        text: '收藏',
+        text: 'Bookmarks',
         link: '/pages/beb6c0bd8a66cea6/',
       },
       {
-        text: '索引',
+        text: 'Index',
         link: '/archives/',
         items: [
-          { text: '分类', link: '/categories/' },
-          { text: '标签', link: '/tags/' },
-          { text: '归档', link: '/archives/' },
+          { text: 'Categories', link: '/categories/' },
+          { text: 'Tags', link: '/tags/' },
+          { text: 'Archives', link: '/archives/' },
         ],
       },
     ],
@@ -116,11 +116,11 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
     logo: '/img/logo.png', // navbar logo
     repo: 'justskiv/vdone', // navbar right side Github link
     searchMaxSuggestions: 10, // max search results
-    lastUpdated: '上次更新', // enable update time with prefix text
+    lastUpdated: 'Last Updated', // enable update time with prefix text
     docsDir: 'docs', // editable folder
     // docsBranch: 'main', // branch for edit links
     editLinks: true, // enable edit links
-    editLinkText: '编辑',
+    editLinkText: 'Edit',
 
     //*** VDone theme specific configuration ***//
 
