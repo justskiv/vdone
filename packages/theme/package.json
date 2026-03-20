@@ -1,0 +1,60 @@
+{
+  "name": "vuepress-theme-vdone",
+  "version": "0.1.0",
+  "description": "VDone theme for VuePress. A knowledge management and blog theme.",
+  "author": {
+    "name": "Nikolay Tuzov",
+    "email": "tuzov.n@gmail.com"
+  },
+  "homepage": "https://github.com/justskiv/vdone#readme",
+  "bugs": {
+    "url": "https://github.com/justskiv/vdone/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justskiv/vdone.git"
+  },
+  "keywords": [
+    "documentation",
+    "vue",
+    "vuepress",
+    "generator",
+    "theme",
+    "blog"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "Nikolay Tuzov",
+      "email": "tuzov.n@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "@better-scroll/core": "^2.0.0-beta.6",
+    "@better-scroll/slide": "^2.0.0-beta.6",
+    "@vuepress/plugin-active-header-links": "^1.2.0",
+    "@vuepress/plugin-nprogress": "^1.2.0",
+    "@vuepress/plugin-search": "^1.2.0",
+    "chalk": "^4.0.0",
+    "docsearch.js": "^2.5.2",
+    "good-storage": "^1.1.1",
+    "js-yaml": "^3.13.1",
+    "json2yaml": "^1.1.0",
+    "lodash": "^4.17.15",
+    "semver": "^7.0.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vuepress-plugin-container": "^2.0.2",
+    "vuepress-plugin-smooth-scroll": "^0.0.3"
+  },
+  "devDependencies": {
+    "@vuepress/types": "^1.9.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "bin": {
+    "vdone": "./bin/checkVersion.js"
+  }
+}

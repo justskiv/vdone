@@ -1,0 +1,42 @@
+{
+  "name": "vdone",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Nikolay Tuzov <tuzov.n@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justskiv/vdone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/justskiv/vdone/issues"
+  },
+  "homepage": "https://github.com/justskiv/vdone#readme",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "export NODE_OPTIONS=--openssl-legacy-provider && node --max_old_space_size=4096 ./node_modules/vuepress/cli.js dev docs",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && node --max_old_space_size=4096 ./node_modules/vuepress/cli.js build docs",
+    "dev:win": "set NODE_OPTIONS=--openssl-legacy-provider && node --max_old_space_size=4096 ./node_modules/vuepress/cli.js dev docs",
+    "build:win": "set NODE_OPTIONS=--openssl-legacy-provider && node --max_old_space_size=4096 ./node_modules/vuepress/cli.js build docs",
+    "predev": "node utils/check.js dev && vdone",
+    "prebuild": "node utils/check.js build && vdone",
+    "editFm": "node utils/editFrontmatter.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "dayjs": "^1.9.7",
+    "inquirer": "^7.1.0",
+    "json2yaml": "^1.1.0",
+    "vuepress": "1.9.9",
+    "vuepress-plugin-comment": "^0.7.3",
+    "vuepress-plugin-demo-block": "^0.7.2",
+    "vuepress-plugin-fulltext-search": "^2.2.1",
+    "vuepress-plugin-one-click-copy": "^1.0.2",
+    "vuepress-plugin-sitemap": "^2.3.1",
+    "vuepress-plugin-thirdparty-search": "^1.0.2",
+    "vuepress-plugin-zooming": "^1.1.7",
+    "vuepress-theme-vdone": "*",
+    "yamljs": "^0.3.0"
+  }
+}

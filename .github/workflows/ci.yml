@@ -1,0 +1,48 @@
+name: CI
+
+#on: [push]
+
+# Trigger on push to main branch
+on:
+  push:
+    branches:
+      - main
+
+env: # Environment variables
+  TZ: Asia/Almaty # Timezone (used for "last updated" timestamps on pages)
+
+jobs:
+  build: # Job name
+    runs-on: ubuntu-latest # Run on ubuntu-latest VM
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout # Step 1
+        uses: actions/checkout@v4 # Checkout repo and get source code. Official actions: https://github.com/actions
+      - name: Use Node.js ${{ matrix.node-version }} # Step 2
+        uses: actions/setup-node@v3 # Install Node.js
+        with:
+          node-version: ${{ matrix.node-version }} # Version
+      - name: Build-and-deploy # Step 3
+        run: |
+          remote_addr=`git remote get-url --push origin`
+          commit_info=`git describe --all --always --long`
+          user_name=`git log -1 --pretty=format:'%an'`
+          user_email=`git log -1 --pretty=format:'%ae'`
+          deploy_branch=gh-pages
+          yarn
+          yarn build
+          cd docs/.vuepress/dist
+          git config --global init.defaultBranch $deploy_branch
+          git init
+          git config user.name ${user_name}
+          git config user.email ${user_email}
+          git add -A
+          git commit -m "auto deploy, $commit_info"
+          remote_addr=`echo $remote_addr | awk -F'://' '{print $2}'`
+          remote_addr=https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@${remote_addr}
+          git remote add origin ${remote_addr}
+          git push origin HEAD:$deploy_branch --force # Push to github $deploy_branch branch
