@@ -9,7 +9,7 @@ export default () => {
             var t = "function" == typeof e.onclick && e.onclick;
             
             e.onclick = function(e) {
-              // 过滤指定元素
+              // Filter out specified elements
               let mark = true;
               EXCLUDECLASS && e.path && e.path.forEach((item) =>{
                 if(item.nodeType === 1) {

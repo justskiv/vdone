@@ -98,11 +98,11 @@ export default {
     getShowStatus(prop) {
       const { htmlModules } = this.$themeConfig
       if (!htmlModules) return false
-      if (htmlModules[prop] === 'article') { // 仅文章页显示
+      if (htmlModules[prop] === 'article') { // Show only on article pages
         return this.isArticle()
-      } else if (htmlModules[prop] === 'custom') { // 仅自定义页显示
+      } else if (htmlModules[prop] === 'custom') { // Show only on custom pages
         return !(this.isArticle())
-      } else { // 全部显示
+      } else { // Show on all pages
         return true
       }
     },
@@ -157,31 +157,31 @@ export default {
       max-height 2.2rem
 .theme-vdone-wrapper
   --linesColor rgba(50, 0, 0, 0.05)
-  &.bg-style-1 // 方格
+  &.bg-style-1 // Grid
     background-image linear-gradient(90deg, var(--linesColor) 3%, transparent 3%), linear-gradient(0deg, var(--linesColor) 3%, transparent 3%)
     background-position center center
     background-size 20px 20px
-  &.bg-style-2 // 横线
+  &.bg-style-2 // Horizontal lines
     background-image repeating-linear-gradient(0, var(--linesColor) 0, var(--linesColor) 1px, transparent 0, transparent 50%)
     background-size 30px 30px
-  &.bg-style-3 // 竖线
+  &.bg-style-3 // Vertical lines
     background-image repeating-linear-gradient(90deg, var(--linesColor) 0, var(--linesColor) 1px, transparent 0, transparent 50%)
     background-size 30px 30px
-  &.bg-style-4 // 左斜线
+  &.bg-style-4 // Left diagonal lines
     background-image repeating-linear-gradient(-45deg, var(--linesColor) 0, var(--linesColor) 1px, transparent 0, transparent 50%)
     background-size 20px 20px
-  &.bg-style-5 // 右斜线
+  &.bg-style-5 // Right diagonal lines
     background-image repeating-linear-gradient(45deg, var(--linesColor) 0, var(--linesColor) 1px, transparent 0, transparent 50%)
     background-size 20px 20px
-  &.bg-style-6 // 点状
+  &.bg-style-6 // Dotted
     background-image radial-gradient(var(--linesColor) 1px, transparent 1px)
     background-size 10px 10px
-// 背景纹适应深色模式
+// Background pattern adapts to dark mode
 .theme-mode-dark
   .theme-vdone-wrapper
     --linesColor rgba(125, 125, 125, 0.05)
 /**
- * 右侧菜单的自适应
+ * Right menu responsive layout
  */
 @media (min-width 720px) and (max-width 1279px)
   .have-rightmenu
@@ -195,7 +195,7 @@ export default {
   .have-rightmenu
     .sidebar .sidebar-sub-headers
       display none
-// 左侧边栏只有一项且没有右侧边栏时
+// When left sidebar has only one item and no right sidebar
 .theme-container.only-sidebarItem:not(.have-rightmenu)
   .sidebar, .sidebar-button
     display none
@@ -207,7 +207,7 @@ export default {
       padding-left 0rem !important
     .sidebar, .sidebar-button
       display block
-// 左侧边栏只有一项且有右侧边栏时
+// When left sidebar has only one item and has right sidebar
 .theme-container.only-sidebarItem.have-rightmenu
   @media (min-width 720px) and (max-width 1279px)
     .sidebar, .sidebar-button

@@ -2,20 +2,20 @@
   <div class="buttons">
     <transition name="fade">
       <div
-        title="返回顶部"
+        title="Back to Top"
         class="button blur go-to-top iconfont icon-fanhuidingbu"
         v-show="showToTop"
         @click="scrollToTop"
       />
     </transition>
     <div
-      title="去评论"
+      title="Go to Comments"
       class="button blur go-to-comment iconfont icon-pinglun"
       v-show="showCommentBut"
       @click="scrollToComment"
     />
     <div
-      title="主题模式"
+      title="Theme Mode"
       class="button blur theme-mode-but iconfont icon-zhuti"
       @mouseenter="showModeBox = true"
       @mouseleave="showModeBox = false"
@@ -46,7 +46,7 @@
 
 <script>
 import debounce from 'lodash.debounce'
-import storage from 'good-storage' // 本地存储
+import storage from 'good-storage' // Local storage
 const MOBILE_DESKTOP_BREAKPOINT = 719 // refer to config.styl
 
 export default {
@@ -60,22 +60,22 @@ export default {
       showModeBox: false,
       modeList: [
         {
-          name: '跟随系统',
+          name: 'Auto',
           icon: 'icon-zidong',
           KEY: 'auto'
         },
         {
-          name: '浅色模式',
+          name: 'Light Mode',
           icon: 'icon-rijianmoshi',
           KEY: 'light'
         },
         {
-          name: '深色模式',
+          name: 'Dark Mode',
           icon: 'icon-yejianmoshi',
           KEY: 'dark'
         },
         {
-          name: '阅读模式',
+          name: 'Reading Mode',
           icon: 'icon-yuedu',
           KEY: 'read'
         }
@@ -83,9 +83,9 @@ export default {
       _scrollTimer: null,
       _textareaEl: null,
       _recordScrollTop: null,
-      COMMENT_SELECTOR_1: '#vuepress-plugin-comment', // 评论区元素的选择器1
-      COMMENT_SELECTOR_2: '#valine-vuepress-comment', // 评论区元素的选择器2
-      COMMENT_SELECTOR_3: '.vssue' // 评论区元素的选择器3
+      COMMENT_SELECTOR_1: '#vuepress-plugin-comment', // Comment section selector 1
+      COMMENT_SELECTOR_2: '#valine-vuepress-comment', // Comment section selector 2
+      COMMENT_SELECTOR_3: '.vssue' // Comment section selector 3
     }
   },
   mounted () {
@@ -99,7 +99,7 @@ export default {
       this.getCommentTop()
     })
 
-    // 小屏时选择主题模式后关闭选择框
+    // Close mode selection box after choosing theme mode on small screens
     if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
       const modeBox = this.$refs.modeBox
       modeBox.onclick = () => {
@@ -113,7 +113,7 @@ export default {
     }
 
 
-    // 移动端对类似:hover效果的处理
+    // Handle :hover-like effects on mobile
     const buttons = document.querySelectorAll('.buttons .button')
     for (let i = 0; i < buttons.length; i++) {
       const button = buttons[i]

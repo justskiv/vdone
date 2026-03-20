@@ -1,8 +1,8 @@
-const fs = require('fs'); // 文件模块
-const matter = require('gray-matter'); // FrontMatter解析器 https://github.com/jonschlinkert/gray-matter
+const fs = require('fs'); // File system module
+const matter = require('gray-matter'); // FrontMatter parser https://github.com/jonschlinkert/gray-matter
 const jsonToYaml = require('json2yaml')
-const chalk = require('chalk') // 命令行打印美化
-// const arg = process.argv.splice(2)[0]; // 获取命令行传入的参数
+const chalk = require('chalk') // CLI output styling
+// const arg = process.argv.splice(2)[0]; // Get argument passed via command line
 const readFileList = require('./modules/readFileList');
 const { type, repairDate, dateFormat } = require('./modules/fn');
 const log = console.log
@@ -12,12 +12,12 @@ const os = require('os');
 const PREFIX = '/pages/'
 
 /**
- * 给.md文件设置frontmatter(标题、日期、永久链接等数据)
+ * Set frontmatter (title, date, permalink, etc.) for .md files
  */
 function setFrontmatter(sourceDir, themeConfig) {
-  const { category: isCategory, tag: isTag, categoryText = '随笔', extendFrontmatter } = themeConfig
-  const files = readFileList(sourceDir) // 读取所有md文件数据
-  // 扩展自定义生成frontmatter
+  const { category: isCategory, tag: isTag, categoryText = 'Essay', extendFrontmatter } = themeConfig
+  const files = readFileList(sourceDir) // Read all md file data
+  // Extend custom-generated frontmatter
   const extendFrontmatterStr = extendFrontmatter ?
     jsonToYaml.stringify(extendFrontmatter)
       .replace(/\n\s{2}/g, "\n")
@@ -25,16 +25,16 @@ function setFrontmatter(sourceDir, themeConfig) {
     : '';
 
   files.forEach(file => {
-    let dataStr = fs.readFileSync(file.filePath, 'utf8');// 读取每个md文件内容
+    let dataStr = fs.readFileSync(file.filePath, 'utf8'); // Read each md file content
 
-    // fileMatterObj => {content:'剔除frontmatter后的文件内容字符串', data:{<frontmatter对象>}, ...}
+    // fileMatterObj => {content:'file content string without frontmatter', data:{<frontmatter object>}, ...}
     const fileMatterObj = matter(dataStr, {});
 
-    if (Object.keys(fileMatterObj.data).length === 0) { // 未定义FrontMatter数据
+    if (Object.keys(fileMatterObj.data).length === 0) { // No FrontMatter data defined
       const stat = fs.statSync(file.filePath);
       const dateStr = dateFormat(
         getBirthtime(stat)
-      ); // 文件的创建时间
+      ); // File creation time
       const categories = getCategories(
         file,
         categoryText
@@ -50,7 +50,7 @@ function setFrontmatter(sourceDir, themeConfig) {
         cateStr = os.EOL + 'categories:' + cateLabelStr
       };
 
-      // 注意下面这些反引号字符串的格式会映射到文件
+      // Note: the formatting of the template literals below maps directly to the file
       const tagsStr = isTag === false ? '' : `
 tags:
   - `;
@@ -61,47 +61,47 @@ date: ${dateStr}
 permalink: ${getPermalink()}${file.filePath.indexOf('_posts') > -1 ? os.EOL + 'sidebar: auto' : ''}${cateStr}${tagsStr}
 ${extendFrontmatterStr}---`;
 
-      fs.writeFileSync(file.filePath, `${fmData}${os.EOL}${fileMatterObj.content}`); // 写入
-      log(chalk.blue('tip ') + chalk.green(`write frontmatter(写入frontmatter)：${file.filePath} `))
+      fs.writeFileSync(file.filePath, `${fmData}${os.EOL}${fileMatterObj.content}`); // Write to file
+      log(chalk.blue('tip ') + chalk.green(`write frontmatter: ${file.filePath} `))
 
-    } else { // 已有FrontMatter
+    } else { // FrontMatter already exists
       let matterData = fileMatterObj.data;
       let hasChange = false;
 
-      // 已有FrontMatter，但是没有title、date、permalink、categories、tags数据的
-      if (!matterData.hasOwnProperty('title')) { // 标题
+      // FrontMatter exists but missing title, date, permalink, categories, or tags
+      if (!matterData.hasOwnProperty('title')) { // Title
         matterData.title = file.name;
         hasChange = true;
       }
 
-      if (!matterData.hasOwnProperty('date')) { // 日期
+      if (!matterData.hasOwnProperty('date')) { // Date
         const stat = fs.statSync(file.filePath);
         matterData.date = dateFormat(getBirthtime(stat));
         hasChange = true;
       }
 
-      if (!matterData.hasOwnProperty('permalink')) { // 永久链接
+      if (!matterData.hasOwnProperty('permalink')) { // Permalink
         matterData.permalink = getPermalink();
         hasChange = true;
       }
 
-      if (file.filePath.indexOf('_posts') > -1 && !matterData.hasOwnProperty('sidebar')) { // auto侧边栏，_posts文件夹特有
+      if (file.filePath.indexOf('_posts') > -1 && !matterData.hasOwnProperty('sidebar')) { // Auto sidebar, specific to _posts folder
         matterData.sidebar = "auto";
         hasChange = true;
       }
 
-      if (!matterData.hasOwnProperty('pageComponent') && matterData.article !== false) { // 是文章页才添加分类和标签
-        if (isCategory !== false && !matterData.hasOwnProperty('categories')) { // 分类
+      if (!matterData.hasOwnProperty('pageComponent') && matterData.article !== false) { // Only add categories and tags for article pages
+        if (isCategory !== false && !matterData.hasOwnProperty('categories')) { // Categories
           matterData.categories = getCategories(file, categoryText)
           hasChange = true;
         }
-        if (isTag !== false && !matterData.hasOwnProperty('tags')) { // 标签
+        if (isTag !== false && !matterData.hasOwnProperty('tags')) { // Tags
           matterData.tags = [''];
           hasChange = true;
         }
       }
 
-      // 扩展自动生成frontmatter的字段
+      // Extend auto-generated frontmatter fields
       if (type(extendFrontmatter) === 'object') {
         Object.keys(extendFrontmatter).forEach(keyName => {
           if (!matterData.hasOwnProperty(keyName)) {
@@ -113,24 +113,24 @@ ${extendFrontmatterStr}---`;
 
       if (hasChange) {
         if (matterData.date && type(matterData.date) === 'date') {
-          matterData.date = repairDate(matterData.date) // 修复时间格式
+          matterData.date = repairDate(matterData.date) // Fix date format
         }
         const newData = jsonToYaml.stringify(matterData).replace(/\n\s{2}/g, "\n").replace(/"/g, "") + '---' + os.EOL + fileMatterObj.content;
-        fs.writeFileSync(file.filePath, newData); // 写入
-        log(chalk.blue('tip ') + chalk.green(`write frontmatter(写入frontmatter)：${file.filePath} `))
+        fs.writeFileSync(file.filePath, newData); // Write to file
+        log(chalk.blue('tip ') + chalk.green(`write frontmatter: ${file.filePath} `))
       }
 
     }
   })
 }
 
-// 获取分类数据
+// Get category data
 function getCategories(file, categoryText) {
   let categories = []
 
   if (file.filePath.indexOf('_posts') === -1) {
-    // 不在_posts文件夹
-    let filePathArr = file.filePath.split(path.sep) // path.sep用于兼容不同系统下的路径斜杠
+    // Not in _posts folder
+    let filePathArr = file.filePath.split(path.sep) // path.sep for cross-platform path separator compatibility
     filePathArr.pop()
 
     let ind = filePathArr.indexOf('docs')
@@ -138,12 +138,12 @@ function getCategories(file, categoryText) {
       while (filePathArr[++ind] !== undefined) {
         const item = filePathArr[ind]
         const firstDotIndex = item.indexOf('.');
-        categories.push(item.substring(firstDotIndex + 1) || '') // 获取分类
-        // categories.push(filePathArr[ind].split('.').pop()) // 获取分类
+        categories.push(item.substring(firstDotIndex + 1) || '') // Get category
+        // categories.push(filePathArr[ind].split('.').pop()) // Get category
       }
     }
   } else {
-    // 碎片化文章的分类生成
+    // Generate categories for fragmented posts
     const matchResult = file.filePath.match(/_posts\/(\S*)\//);
     const resultStr = matchResult ? matchResult[1] : ''
     const resultArr = resultStr.split('/').filter(Boolean)
@@ -157,13 +157,13 @@ function getCategories(file, categoryText) {
   return categories
 }
 
-// 获取文件创建时间
+// Get file creation time
 function getBirthtime(stat) {
-  // 在一些系统下无法获取birthtime属性的正确时间，使用atime代替
+  // On some systems birthtime is not available correctly, use atime as fallback
   return stat.birthtime.getFullYear() != 1970 ? stat.birthtime : stat.atime
 }
 
-// 定义永久链接数据
+// Generate permalink data
 function getPermalink() {
   return `${PREFIX + (Math.random() + Math.random()).toString(16).slice(2, 8)}/`
 }

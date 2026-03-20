@@ -1,11 +1,11 @@
-// ！！！注：此文件没有使用到，仅用于测试和侧边栏数据格式的参考。
+// NOTE: This file is not in use; it serves only as a reference for testing and sidebar data format.
 
-// 侧边栏
+// Sidebar
 module.exports = {
   '/01.前端/': [
     {
       title: 'JavaScript',
-      collapsable: false, //是否可折叠，可选的，默认true
+      collapsable: false, // Collapsible, optional, default true
       children: [
         ['01.JavaScript/01.JavaScript中的名词概念','JavaScript中的名词概念'],
         ['01.JavaScript/02.数据类型转换','数据类型转换'],
@@ -35,10 +35,10 @@ module.exports = {
   '/03.技术杂谈/': [
     {
       title: '技术杂谈',
-      collapsable: false, //是否可折叠，可选的，默认true
-      sidebarDepth: 2, // 深度，可选的, 默认值是 1
+      collapsable: false, // Collapsible, optional, default true
+      sidebarDepth: 2, // Depth, optional, default 1
       children: [
-        ['01.Git使用手册','Git使用手册'], // 同 {path: '01.Git使用手册', title: 'Git使用文档'}
+        ['01.Git使用手册','Git使用手册'], // Equivalent to {path: '01.Git使用手册', title: 'Git使用文档'}
         ['02.GitHub高级搜索技巧','GitHub高级搜索技巧'],
         ['03.Markdown使用教程','Markdown使用教程'],
         ['04.npm常用命令','npm常用命令'],
@@ -66,7 +66,7 @@ module.exports = {
     },
     {
       title: '面试',
-      collapsable: false, //是否可折叠，可选的，默认true
+      collapsable: false, // Collapsible, optional, default true
       children: [
         ['03.面试/01.面试问题集锦','面试问题集锦'],
       ]
@@ -74,7 +74,7 @@ module.exports = {
     ['01.在线工具','在线工具'],
     ['02.友情链接','友情链接'],
   ],
-  // '/': [ // 在最后定义，在没有单独设置侧边栏时统一使用这个侧边栏
+  // '/': [ // Defined last; used as the default sidebar when no specific one is set
   //   '',
   //   'git',
   //   'github',
@@ -83,12 +83,12 @@ module.exports = {
   //   'interview'
   //   // '/',
   //   // {
-  //   //   title: 'foo', // 标题，必要的
-  //   //   path: '/foo/', // 标题的路径，可选的, 应该是一个绝对路径
-  //   //   collapsable: false, // 是否可折叠，可选的，默认true
-  //   //   sidebarDepth: 1,    // 深度，可选的, 默认值是 1
+  //   //   title: 'foo', // Title, required
+  //   //   path: '/foo/', // Title path, optional, should be an absolute path
+  //   //   collapsable: false, // Collapsible, optional, default true
+  //   //   sidebarDepth: 1,    // Depth, optional, default 1
   //   //   children: [
-  //   //     ['foo/', '子页1'],
+  //   //     ['foo/', 'Subpage 1'],
   //   //     'foo/1',
   //   //     'foo/2',
   //   //   ]
@@ -96,7 +96,7 @@ module.exports = {
   //   // {
   //   //   title: 'bar',
   //   //   children: [
-  //   //     ['bar/', '子页2'],
+  //   //     ['bar/', 'Subpage 2'],
   //   //     'bar/3',
   //   //     'bar/4',
   //   //   ]

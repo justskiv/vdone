@@ -2,7 +2,7 @@
   <div :class="['article-list', { 'no-article-list': isShowArticle }]">
     <div class="article-title">
       <router-link :to="moreArticle || '/archives/'" class="iconfont icon-bi"
-        >最近更新</router-link
+        >Recent Updates</router-link
       >
     </div>
     <div class="article-wrapper">
@@ -25,7 +25,7 @@
         <dd></dd>
         <dt>
           <router-link :to="moreArticle || '/archives/'" class="more"
-            >更多文章></router-link
+            >More Articles ></router-link
           >
         </dt>
       </dl>

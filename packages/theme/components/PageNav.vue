@@ -1,6 +1,6 @@
 <template>
   <div class="page-nav-wapper">
-    <!-- 页面中间左右翻页 -->
+    <!-- Center page navigation (prev/next) -->
     <div
       class="page-nav-centre-wrap"
       v-if="$themeConfig.pageButton !== false && (prev || next)"
@@ -26,7 +26,7 @@
       </router-link>
     </div>
 
-    <!-- 底部翻页按钮 -->
+    <!-- Bottom pagination buttons -->
     <div
       class="page-nav"
       v-if="prev || next"

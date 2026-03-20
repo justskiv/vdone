@@ -1,20 +1,20 @@
 import { type, compareDate } from './index'
 
 /**
- * 过滤非文章页
- * @param {Array} posts 所有文章数据
+ * Filter out non-article pages
+ * @param {Array} posts All post data
  */
 export function filterPosts (posts) {
   posts = posts.filter(item => {
     const { frontmatter: { pageComponent, article, home } } = item
-    return !(pageComponent || article === false || home === true) // 存在页面组件、article字段为false，以及首页
+    return !(pageComponent || article === false || home === true) // Exclude page components, pages with article=false, and home page
   })
   return posts
 }
 
 /**
- * 按置顶和时间排序
- * @param {Array} posts 过滤非文章页之后的文章数据
+ * Sort by sticky priority and date
+ * @param {Array} posts Filtered post data (non-article pages excluded)
  */
 export function sortPosts (posts) {
   posts.sort((prev, next) => {
@@ -33,8 +33,8 @@ export function sortPosts (posts) {
 }
 
 /**
- * 按时间排序
- * @param {Array} posts 过滤非文章页之后的文章数据
+ * Sort by date
+ * @param {Array} posts Filtered post data (non-article pages excluded)
  */
 export function sortPostsByDate (posts) {
   posts.sort((prev, next) => {
@@ -44,8 +44,8 @@ export function sortPostsByDate (posts) {
 }
 
 /**
- * 按分类和标签分组
- * @param {Array} posts 按时间排序之后的文章数据
+ * Group posts by categories and tags
+ * @param {Array} posts Post data sorted by date
  */
 export function groupPosts (posts) {
   const categoriesObj = {}
@@ -55,7 +55,7 @@ export function groupPosts (posts) {
     const { frontmatter: { categories, tags } } = posts[i]
     if (type(categories) === 'array') {
       categories.forEach(item => {
-        if (item) { // 分类值是有效的
+        if (item) { // Category value is valid
           if (!categoriesObj[item]) {
             categoriesObj[item] = []
           }
@@ -65,7 +65,7 @@ export function groupPosts (posts) {
     }
     if (type(tags) === 'array') {
       tags.forEach(item => {
-        if (item) { // 标签值是有效的
+        if (item) { // Tag value is valid
           if (!tagsObj[item]) {
             tagsObj[item] = []
           }
@@ -81,8 +81,8 @@ export function groupPosts (posts) {
 }
 
 /**
- * 获取所有分类和标签
- * @param {Object} groupPosts 按分类和标签分组之后的文章数据
+ * Get all categories and tags
+ * @param {Object} groupPosts Post data grouped by categories and tags
  */
 export function categoriesAndTags (groupPosts) {
   const categoriesArr = []

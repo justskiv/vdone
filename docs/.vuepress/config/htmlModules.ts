@@ -1,23 +1,23 @@
 import { VdoneThemeConfig } from 'vuepress-theme-vdone/types'
 
-/** 插入自定义html模块 (可用于插入广告模块等)
+/** Insert custom HTML modules (can be used for ads, etc.)
  * {
- *   homeSidebarB: htmlString, 首页侧边栏底部
+ *   homeSidebarB: htmlString, // Homepage sidebar bottom
  *
- *   sidebarT: htmlString, 所有左侧边栏顶部
- *   sidebarB: htmlString, 所有左侧边栏底部
+ *   sidebarT: htmlString, // All left sidebars top
+ *   sidebarB: htmlString, // All left sidebars bottom
  *
- *   pageT: htmlString, 页面顶部
- *   pageB: htmlString, 页面底部
- *   pageTshowMode: string, 页面顶部-显示方式：未配置默认所有页面；'article' => 仅文章页①； 'custom' => 仅自定义页①
- *   pageBshowMode: string, 页面底部-显示方式：未配置默认所有页面；'article' => 仅文章页①； 'custom' => 仅自定义页①
+ *   pageT: htmlString, // Page top
+ *   pageB: htmlString, // Page bottom
+ *   pageTshowMode: string, // Page top display mode: defaults to all pages; 'article' => article pages only①; 'custom' => custom pages only①
+ *   pageBshowMode: string, // Page bottom display mode: defaults to all pages; 'article' => article pages only①; 'custom' => custom pages only①
  *
- *   windowLB: htmlString, 全局窗口左下角②
- *   windowRB: htmlString, 全局窗口右下角②
+ *   windowLB: htmlString, // Global window bottom-left②
+ *   windowRB: htmlString, // Global window bottom-right②
  * }
  *
- * ①注：在.md文件front matter配置`article: false`的页面是自定义页，未配置的默认是文章页（首页除外）。
- * ②注：windowLB 和 windowRB：1.展示区块最大宽高200px*400px。2.请给自定义元素定一个不超过200px*400px的宽高。3.在屏幕宽度小于960px时无论如何都不会显示。
+ * ① Note: Pages with `article: false` in .md front matter are custom pages; pages without this setting default to article pages (except the homepage).
+ * ② Note: windowLB and windowRB: 1. Max display block size is 200px*400px. 2. Custom elements should not exceed 200px*400px. 3. Never displayed when screen width is less than 960px.
  */
 const htmlModule: VdoneThemeConfig['htmlModules'] = {
   homeSidebarB:
@@ -31,7 +31,7 @@ const htmlModule: VdoneThemeConfig['htmlModules'] = {
     ">Telegram</p>
     <a href="https://t.me/ntuzov" target="_blank">@ntuzov</a>
     </div>`,
-  // `<!-- 纵向自适应 -->
+  // `<!-- Vertical auto-fit -->
   // <ins class="adsbygoogle"
   //     style="display:block;padding: 0.95rem;"
   //     data-ad-client="ca-pub-7828333725993554"
@@ -42,7 +42,7 @@ const htmlModule: VdoneThemeConfig['htmlModules'] = {
   //     (adsbygoogle = window.adsbygoogle || []).push({});
   // </script>`,
   // sidebarT:
-  //   `<!--  固定100% * 150px可显示，max-height:150px 未见显示-->
+  //   `<!-- Fixed 100% * 150px displays, max-height:150px does not display -->
   //   <ins class="adsbygoogle"
   //         style="display:inline-block;width:100%;max-height:150px"
   //         data-ad-client="ca-pub-7828333725993554"
@@ -51,7 +51,7 @@ const htmlModule: VdoneThemeConfig['htmlModules'] = {
   //         (adsbygoogle = window.adsbygoogle || []).push({});
   //     </script>`,
   // sidebarB:
-  //   `<!-- 正方形 -->
+  //   `<!-- Square -->
   //     <ins class="adsbygoogle"
   //         style="display:block"
   //         data-ad-client="ca-pub-7828333725993554"
@@ -62,7 +62,7 @@ const htmlModule: VdoneThemeConfig['htmlModules'] = {
   //         (adsbygoogle = window.adsbygoogle || []).push({});
   //     </script>`,
   // pageT:
-  //   `<!-- 固定100% * 90px可显示，max-height:90px未见显示-->
+  //   `<!-- Fixed 100% * 90px displays, max-height:90px does not display -->
   //    <ins class="adsbygoogle"
   //         style="display:inline-block;width:100%;max-height:90px"
   //         data-ad-client="ca-pub-7828333725993554"
@@ -72,7 +72,7 @@ const htmlModule: VdoneThemeConfig['htmlModules'] = {
   //     </script>`,
   // pageTshowMode: 'article',
   // pageB:
-  //   `<!-- 横向自适应 -->
+  //   `<!-- Horizontal auto-fit -->
   //     <ins class="adsbygoogle"
   //         style="display:block"
   //         data-ad-client="ca-pub-7828333725993554"
@@ -83,8 +83,8 @@ const htmlModule: VdoneThemeConfig['htmlModules'] = {
   //         (adsbygoogle = window.adsbygoogle || []).push({});
   //     </script>`,
   // pageBshowMode: 'article',
-  // windowLB: // 会遮挡部分侧边栏
-  //   `<!-- 固定200*200px -->
+  // windowLB: // May overlap part of the sidebar
+  //   `<!-- Fixed 200*200px -->
   //     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   //     <ins class="adsbygoogle"
   //         style="display:inline-block;width:200px;height:200px"
@@ -94,7 +94,7 @@ const htmlModule: VdoneThemeConfig['htmlModules'] = {
   //         (adsbygoogle = window.adsbygoogle || []).push({});
   //     </script>`,
   // windowRB:
-  //   `<!-- 固定160*160px -->
+  //   `<!-- Fixed 160*160px -->
   //     <ins class="adsbygoogle"
   //         style="display:inline-block;max-width:160px;max-height:160px"
   //         data-ad-client="ca-pub-7828333725993554"
@@ -107,13 +107,13 @@ const htmlModule: VdoneThemeConfig['htmlModules'] = {
 
 
 // const htmlModule = {
-//   homeSidebarB: `<div style="width:100%;height:100px;color:#fff;background: #eee;">自定义模块测试</div>`,
-//   sidebarT: `<div style="width:100%;height:100px;color:#fff;background: #eee;">自定义模块测试</div>`,
-//   sidebarB: `<div style="width:100%;height:100px;color:#fff;background: #eee;">自定义模块测试</div>`,
-//   pageT: `<div style="width:100%;height:100px;color:#fff;background: #eee;">自定义模块测试</div>`,
-//   pageB: `<div style="width:100%;height:100px;color:#fff;background: #eee;">自定义模块测试</div>`,
-//   windowLB: `<div style="width:100%;height:100px;color:#fff;background: #eee;">自定义模块测试</div>`,
-//   windowRB: `<div style="width:100%;height:100px;color:#fff;background: #eee;">自定义模块测试</div>`,
+//   homeSidebarB: `<div style="width:100%;height:100px;color:#fff;background: #eee;">Custom module test</div>`,
+//   sidebarT: `<div style="width:100%;height:100px;color:#fff;background: #eee;">Custom module test</div>`,
+//   sidebarB: `<div style="width:100%;height:100px;color:#fff;background: #eee;">Custom module test</div>`,
+//   pageT: `<div style="width:100%;height:100px;color:#fff;background: #eee;">Custom module test</div>`,
+//   pageB: `<div style="width:100%;height:100px;color:#fff;background: #eee;">Custom module test</div>`,
+//   windowLB: `<div style="width:100%;height:100px;color:#fff;background: #eee;">Custom module test</div>`,
+//   windowRB: `<div style="width:100%;height:100px;color:#fff;background: #eee;">Custom module test</div>`,
 // }
 
 

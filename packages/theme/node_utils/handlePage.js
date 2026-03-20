@@ -1,46 +1,46 @@
-// 生成或删除页面（分类页、标签页、归档页...）
+// Create or delete pages (categories page, tags page, archives page...)
 
-const fs = require('fs'); // 文件模块
-const path = require('path'); // 路径模块
-const chalk = require('chalk') // 命令行打印美化
+const fs = require('fs'); // File system module
+const path = require('path'); // Path module
+const chalk = require('chalk') // CLI output styling
 const { type } = require('./modules/fn');
 const log = console.log
 
 function createPage (sourceDir, page) {
-  const dirPath = path.join(sourceDir, '@pages') // 生成的文件夹路径
+  const dirPath = path.join(sourceDir, '@pages') // Generated folder path
 
-  // 文件夹不存在时
+  // When the folder does not exist
   if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath) // 创建文件夹
+    fs.mkdirSync(dirPath) // Create folder
   }
 
-  const pagePath = path.join(dirPath, `${page}.md`) // 生成的文件路径
+  const pagePath = path.join(dirPath, `${page}.md`) // Generated file path
 
-  // 文件已经存在时跳出
+  // Skip if the file already exists
   if (fs.existsSync(pagePath)) {
     return
   }
 
-  // 注意：反引号字符串的格式会映射到文件
+  // Note: the formatting of template literals maps directly to the file
   let content = ''
   if (page.indexOf('categories') > -1) {
     content = `---
 categoriesPage: true
-title: 分类
+title: Categories
 permalink: /categories/
 article: false
 ---`
   } else if (page.indexOf('tags') > -1) {
     content = `---
 tagsPage: true
-title: 标签
+title: Tags
 permalink: /tags/
 article: false
 ---`
   } else if (page.indexOf('archives') > -1) {
     content = `---
 archivesPage: true
-title: 归档
+title: Archives
 permalink: /archives/
 article: false
 ---`
@@ -48,30 +48,30 @@ article: false
 
   if (content) {
     fs.writeFileSync(pagePath, content)
-    log(chalk.blue('tip ') + chalk.green(`create page(生成页面): ${pagePath}`))
+    log(chalk.blue('tip ') + chalk.green(`create page: ${pagePath}`))
   }
 }
 
-// 删除页面文件
+// Delete page file
 function deletePage (sourceDir, page) {
-  const dirPath = path.join(sourceDir, '@pages') // 文件夹路径
-  const pagePath = path.join(dirPath, `${page}.md`) // 文件路径
+  const dirPath = path.join(sourceDir, '@pages') // Folder path
+  const pagePath = path.join(dirPath, `${page}.md`) // File path
 
-  // 文件是否存在
+  // Check if the file exists
   if (fs.existsSync(pagePath)) {
     fs.unlinkSync(pagePath)
-    log(chalk.blue('tip ') + chalk.green(`delete page(删除页面): ${pagePath}`))
+    log(chalk.blue('tip ') + chalk.green(`delete page: ${pagePath}`))
   }
   deleteDir(dirPath)
 }
 
-// 删除文件夹
+// Delete directory
 function deleteDir (dirPath) {
   if (fs.existsSync(dirPath)) {
     const files = fs.readdirSync(dirPath)
     if (type(files) === 'array' && files.length === 0) {
       fs.rmdirSync(dirPath)
-      log(chalk.blue('tip ') + chalk.green(`delete dir(删除目录): ${dirPath}`))
+      log(chalk.blue('tip ') + chalk.green(`delete dir: ${dirPath}`))
     }
   }
 }

@@ -1,4 +1,4 @@
-// 解决代码选项卡无法加载的问题
+// Fix code tab loading issue
 import Vue from 'vue'
 import CodeBlock from "@theme/global-components/CodeBlock.vue"
 import CodeGroup from "@theme/global-components/CodeGroup.vue"
@@ -6,15 +6,15 @@ import CodeGroup from "@theme/global-components/CodeGroup.vue"
 Vue.component(CodeBlock)
 Vue.component(CodeGroup)
 
-//  注：此文件在浏览器端运行
+// Note: this file runs on the browser side
 import postsMixin from '@theme/mixins/posts'
 export default ({
-  Vue, // VuePress 正在使用的 Vue 构造函数
-  options, // 附加到根实例的一些选项
-  router, // 当前应用的路由实例
-  siteData // 站点元数据
+  Vue, // The Vue constructor used by VuePress
+  options, // Options attached to the root instance
+  router, // The router instance of the current app
+  siteData // Site metadata
 }) => {
-  // 修复ISO8601时间格式为普通时间格式，以及添加作者信息
+  // Convert ISO8601 date format to standard format, and add author info
   siteData.pages.map(item => {
     const { frontmatter: { date, author } } = item
     if (typeof date === 'string' && date.charAt(date.length - 1) === 'Z') {
@@ -29,19 +29,19 @@ export default ({
     }
   })
 
-  // 将对文章数据的处理结果混入Vue实例
+  // Mix the processed post data into the Vue instance
   Vue.mixin(postsMixin)
 }
 
 
-// 修复ISO8601时间格式为普通时间格式
+// Convert ISO8601 date format to standard date format
 function repairUTCDate(date) {
   if (!(date instanceof Date)) {
     date = new Date(date)
   }
   return `${date.getUTCFullYear()}-${zero(date.getUTCMonth() + 1)}-${zero(date.getUTCDate())} ${zero(date.getUTCHours())}:${zero(date.getUTCMinutes())}:${zero(date.getUTCSeconds())}`;
 }
-// 小于10补0
+// Pad with leading zero if less than 10
 function zero(d) {
   return d.toString().padStart(2, '0')
 }

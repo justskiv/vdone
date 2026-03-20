@@ -1,4 +1,4 @@
-// 引入字体图标
+// Import icon fonts
 @import '//at.alicdn.com/t/font_1678482_4tbhmh589x.css'
 
 @require './config'
@@ -23,10 +23,10 @@ body
   color $textColor
   background var(--bodyBg)
 
-// 去掉黄色边框
+// Remove yellow outline
 a,input,button
   outline: none; -webkit-tap-highlight-color: rgba(255, 255, 255, 0); -webkit-focus-ring-color: rgba(0, 0, 0, 0);
-// 滚动条样式
+// Scrollbar styles
 @media (min-width: $MQMobile)
   ::-webkit-scrollbar
     width:6px;
@@ -44,7 +44,7 @@ a,input,button
     -webkit-border-radius:3px
 
 
-.card-box // 卡片
+.card-box // Card
   border-radius 5px
   background var(--mainBg)
   box-shadow 0px 0px 4px 0 rgba(0,0,0,.1)
@@ -60,17 +60,17 @@ a,input,button
     box-shadow 0 0
     border: 1px solid var(--borderColor)
 
-.blur // 模糊滤镜
+.blur // Blur filter
   backdrop-filter saturate(200%) blur(20px)
 
-.custom-page // 自定义页面
+.custom-page // Custom page
   min-height calc(100vh - 3.6rem)
   padding-top $navbarHeight
   padding-bottom .9rem
   .theme-vdone-wrapper
     margin 0 auto
 
-// 默认的搜索框样式重置
+// Reset default search box styles
 body .search-box
   input
     background-color transparent
@@ -137,7 +137,7 @@ body .search-box
   word-wrap break-word
   @extend $wrapper
   > *:first-child
-    // margin-top $navbarHeight // 内容第一个元素的top距离
+    // margin-top $navbarHeight // top distance of first content element
 
   a:hover
     text-decoration underline
@@ -210,7 +210,7 @@ h1, h2, h3, h4, h5, h6
     opacity: 1
 
 
-// 没有h1标签时
+// When there is no h1 tag
 p,pre,.custom-block
   {$contentClass}:not(.custom) > &
       &:first-child
@@ -219,7 +219,7 @@ p,pre,.custom-block
 
 h1
   font-size 1.9rem
-  {$contentClass}:not(.custom) > & // 页面内容的首个h1标签隐藏
+  {$contentClass}:not(.custom) > & // Hide the first h1 tag in page content
     &:first-child
       display none
 
@@ -310,7 +310,7 @@ th, td
 
 @require 'mobile.styl'
 
-// 打印时的样式
+// Print styles
 @media print
   .navbar,.sidebar,.buttons
     display: none

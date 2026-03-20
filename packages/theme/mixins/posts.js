@@ -2,19 +2,19 @@ import { filterPosts, sortPosts, sortPostsByDate, groupPosts, categoriesAndTags 
 
 export default {
   computed: {
-    $filterPosts () { // 过滤非文章页和首页的文章数据
+    $filterPosts () { // Post data with non-article and home pages filtered out
       return filterPosts(this.$site.pages)
     },
-    $sortPosts () { // 按置顶和时间排序的文章数据
+    $sortPosts () { // Post data sorted by sticky priority and date
       return sortPosts(this.$filterPosts)
     },
-    $sortPostsByDate () { // 仅按时间排序的文章数据
+    $sortPostsByDate () { // Post data sorted by date only
       return sortPostsByDate(this.$filterPosts)
     },
-    $groupPosts () { // 按分类和标签分组的文章数据
+    $groupPosts () { // Post data grouped by categories and tags
       return groupPosts(this.$sortPosts)
     },
-    $categoriesAndTags () { // 所有分类和标签数据
+    $categoriesAndTags () { // All categories and tags data
       return categoriesAndTags(this.$groupPosts)
     }
   }

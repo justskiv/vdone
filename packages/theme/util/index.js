@@ -250,13 +250,13 @@ function resolveItem(item, pages, base, groupDepth = 1) {
 }
 
 
-// 类型判断
+// Type check
 export function type(o) {
   const s = Object.prototype.toString.call(o)
   return s.match(/\[object (.*?)\]/)[1].toLowerCase()
 }
 
-// 日期格式化(只获取年月日)
+// Format date (extract year, month, and day only)
 export function dateFormat(date) {
   if (!(date instanceof Date)) {
     date = new Date(date)
@@ -264,27 +264,27 @@ export function dateFormat(date) {
   return `${date.getUTCFullYear()}-${zero(date.getUTCMonth() + 1)}-${zero(date.getUTCDate())}`
 }
 
-// 小于10补0
+// Pad with leading zero if less than 10
 export function zero(d) {
   return d.toString().padStart(2, '0')
 }
 
-// 获取时间的时间戳
+// Get the timestamp of a post
 export function getTimeNum(post) {
   let dateStr = post.frontmatter.date || post.lastUpdated || new Date()
   let date = new Date(dateStr)
-  if (date == "Invalid Date" && dateStr) { // 修复new Date()在Safari下出现Invalid Date的问题
+  if (date == "Invalid Date" && dateStr) { // Fix "Invalid Date" issue with new Date() in Safari
     date = new Date(dateStr.replace(/-/g, '/'))
   }
   return date.getTime()
 }
 
-// 比对时间
+// Compare dates
 export function compareDate(a, b) {
   return getTimeNum(b) - getTimeNum(a)
 }
 
-// 将特殊符号编码（应用于url）
+// Encode special characters for use in URLs
 export function encodeUrl(str) {
   str = str + ''
   str = str.replace(/ |((?=[\x21-\x7e]+)[^A-Za-z0-9])/g, '-')

@@ -9,7 +9,7 @@
         {{ $page.title }}
       </h1>
       <div class="count">
-        总共 <i>{{ $sortPostsByDate.length }}</i> 篇文章
+        Total <i>{{ $sortPostsByDate.length }}</i> articles
       </div>
       <ul>
         <template v-for="(item, index) in postsList">
@@ -21,7 +21,7 @@
             <h2>
               {{ year }}
               <span>
-                <i>{{ countByYear[year] }}</i> 篇
+                <i>{{ countByYear[year] }}</i> articles
               </span>
             </h2>
           </li>
@@ -50,17 +50,17 @@ export default {
   data() {
     return {
       postsList: [],
-      countByYear: {}, // 根据年份统计的文章数
+      countByYear: {}, // Article count by year
 
-      perPage: 80, // 每页长
-      currentPage: 1// 当前页
+      perPage: 80, // Items per page
+      currentPage: 1// Current page
 
     }
   },
   created() {
     this.getPageData()
 
-    // 根据年份计算出文章数
+    // Calculate article count by year
     const { $sortPostsByDate, countByYear } = this
     for (let i = 0; i < $sortPostsByDate.length; i++) {
       const { frontmatter: { date } } = $sortPostsByDate[i];

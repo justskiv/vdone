@@ -18,7 +18,7 @@
           </h2>
           <div class="article-info">
             <a
-              title="作者"
+              title="Author"
               class="iconfont icon-touxiang"
               target="_blank"
               v-if="item.author && item.author.href"
@@ -26,20 +26,20 @@
               >{{ item.author.name ? item.author.name : item.author }}</a
             >
             <span
-              title="作者"
+              title="Author"
               class="iconfont icon-touxiang"
               v-else-if="item.author"
               >{{ item.author.name ? item.author.name : item.author }}</span
             >
 
             <span
-              title="创建时间"
+              title="Created"
               class="iconfont icon-riqi"
               v-if="item.frontmatter.date"
               >{{ item.frontmatter.date.split(' ')[0] }}</span
             >
             <span
-              title="分类"
+              title="Category"
               class="iconfont icon-wenjian"
               v-if="
                 $themeConfig.category !== false && item.frontmatter.categories
@@ -53,7 +53,7 @@
               >
             </span>
             <span
-              title="标签"
+              title="Tags"
               class="iconfont icon-biaoqian tags"
               v-if="
                 $themeConfig.tag !== false &&
@@ -75,7 +75,7 @@
           <router-link
             :to="item.path"
             class="readmore iconfont icon-jiantou-you"
-            >阅读全文</router-link
+            >Read More</router-link
           >
         </div>
       </div>
@@ -117,7 +117,7 @@ export default {
   },
   watch: {
     currentPage() {
-      if (this.$route.query.p != this.currentPage) { // 此判断防止添加相同的路由信息（如浏览器回退时触发的）
+      if (this.$route.query.p != this.currentPage) { // Prevent adding duplicate route info (e.g. triggered by browser back)
         this.$router.push({
           query: {
             ...this.$route.query,
@@ -224,7 +224,7 @@ export default {
               &::before
                 content '/'
         .tags a:not(:first-child)::before
-          content '、'
+          content ', '
     .excerpt-wrapper
       border-top 1px solid var(--borderColor)
       margin 0.5rem 0

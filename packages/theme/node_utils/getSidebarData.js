@@ -1,31 +1,31 @@
-const fs = require('fs'); // 文件模块
-const path = require('path'); // 路径模块
-const chalk = require('chalk') // 命令行打印美化
-const matter = require('gray-matter'); // front matter解析器
+const fs = require('fs'); // File system module
+const path = require('path'); // Path module
+const chalk = require('chalk') // CLI output styling
+const matter = require('gray-matter'); // Front matter parser
 const log = console.log
 
-let catalogueData = {}; // 目录页数据
+let catalogueData = {}; // Catalogue page data
 
 /**
- * 生成侧边栏数据
- * @param {String} sourceDir .md文件所在源目录(一般是docs目录)
- * @param {Boolean} collapsable  是否可折叠
+ * Generate sidebar data
+ * @param {String} sourceDir Source directory containing .md files (usually the docs directory)
+ * @param {Boolean} collapsable Whether sections are collapsible
  */
 function createSidebarData(sourceDir, collapsable) {
   const sidebarData = {};
   const tocs = readTocs(sourceDir);
-  tocs.forEach(toc => { // toc是每个目录的绝对路径
+  tocs.forEach(toc => { // toc is the absolute path of each directory
 
-    if (toc.substr(-6) === '_posts') { // 碎片化文章
+    if (toc.substr(-6) === '_posts') { // Fragmented posts
 
-      // 注释说明：碎片化文章不需要生成结构化侧边栏 2020.05.01
+      // Note: fragmented posts do not need structured sidebar generation 2020.05.01
       // const sidebarArr = mapTocToPostSidebar(toc);
       // sidebarData[`/${path.basename(toc)}/`] = sidebarArr
 
     } else {
       const sidebarObj = mapTocToSidebar(toc, collapsable);
       if (!sidebarObj.sidebar.length) {
-        log(chalk.yellow(`warning: 该目录 "${toc}" 内部没有任何文件或文件序号出错，将忽略生成对应侧边栏`))
+        log(chalk.yellow(`warning: the directory "${toc}" has no files or has incorrect file numbering, skipping sidebar generation`))
         return;
       }
       sidebarData[`/${path.basename(toc)}/`] = sidebarObj.sidebar
@@ -40,15 +40,15 @@ module.exports = createSidebarData;
 
 
 /**
- * 读取指定目录下的文件绝对路径
- * @param {String} root 指定的目录
+ * Read absolute file paths in the specified directory
+ * @param {String} root The specified directory
 */
 function readTocs(root) {
   const result = [];
-  const files = fs.readdirSync(root); // 读取目录,返回数组，成员是root底下所有的目录名 (包含文件夹和文件)
+  const files = fs.readdirSync(root); // Read directory, returns array of all entries under root (including folders and files)
   files.forEach(name => {
-    const file = path.resolve(root, name); // 将路径或路径片段的序列解析为绝对路径
-    if (fs.statSync(file).isDirectory() && name !== '.vuepress' && name !== '@pages') { // 是否为文件夹目录，并排除.vuepress文件夹
+    const file = path.resolve(root, name); // Resolve path segments into an absolute path
+    if (fs.statSync(file).isDirectory() && name !== '.vuepress' && name !== '@pages') { // Check if it is a directory, excluding .vuepress folder
       result.push(file);
     }
   })
@@ -57,35 +57,35 @@ function readTocs(root) {
 
 
 /**
- * 将碎片化文章目录(_posts)映射为对应的侧边栏配置数据
+ * Map the fragmented posts directory (_posts) to corresponding sidebar config data
  * @param {String} root
  */
 function mapTocToPostSidebar(root) {
-  let postSidebar = [] // 碎片化文章数据
-  const files = fs.readdirSync(root); // 读取目录（文件和文件夹）,返回数组
+  let postSidebar = [] // Fragmented post data
+  const files = fs.readdirSync(root); // Read directory (files and folders), returns array
 
   files.forEach(filename => {
-    const file = path.resolve(root, filename); // 方法：将路径或路径片段的序列解析为绝对路径
-    const stat = fs.statSync(file); // 文件信息
+    const file = path.resolve(root, filename); // Resolve path segments into an absolute path
+    const stat = fs.statSync(file); // File info
 
     const fileNameArr = filename.split('.');
     if (fileNameArr.length > 2) {
-      log(chalk.yellow(`warning: 该文件 "${file}" 在_posts文件夹中，不应有序号，且文件名中间不应有'.'`))
+      log(chalk.yellow(`warning: the file "${file}" is in _posts folder and should not have a sequence number, and the filename should not contain '.'`))
       return
     }
-    if (stat.isDirectory()) { // 是文件夹目录
-      // log(chalk.yellow(`warning: 该目录 "${file}" 内文件无法生成侧边栏，_posts文件夹里面不能有二级目录。`))
+    if (stat.isDirectory()) { // Is a directory
+      // log(chalk.yellow(`warning: files in the directory "${file}" cannot generate sidebar, _posts folder cannot have subdirectories.`))
       return
     }
 
     let [title, type] = filename.split('.');
     if (type !== 'md') {
-      log(chalk.yellow(`warning: 该文件 "${file}" 非.md格式文件，不支持该文件类型`))
+      log(chalk.yellow(`warning: the file "${file}" is not a .md file, this file type is not supported`))
       return;
     }
 
-    const contentStr = fs.readFileSync(file, 'utf8') // 读取md文件内容，返回字符串
-    const { data } = matter(contentStr, {}) // 解析出front matter数据
+    const contentStr = fs.readFileSync(file, 'utf8') // Read md file content, returns string
+    const { data } = matter(contentStr, {}) // Parse front matter data
     const { permalink = '', titleTag = '' } = data || {}
     if (data.title) {
       title = data.title
@@ -94,7 +94,7 @@ function mapTocToPostSidebar(root) {
     if (titleTag) {
       item.push(titleTag)
     }
-    postSidebar.push(item);  // [<路径>, <标题>, <永久链接>, <?标题标签>]
+    postSidebar.push(item);  // [<path>, <title>, <permalink>, <?titleTag>]
   })
 
   return postSidebar
@@ -102,20 +102,20 @@ function mapTocToPostSidebar(root) {
 
 
 /**
- * 将目录映射为对应的侧边栏配置数据
+ * Map a directory to corresponding sidebar config data
  * @param {String} root
  * @param {Boolean} collapsable
  * @param {String} prefix
  */
 
 function mapTocToSidebar(root, collapsable, prefix = '') {
-  let sidebar = []; // 结构化文章侧边栏数据
-  const files = fs.readdirSync(root); // 读取目录（文件和文件夹）,返回数组
+  let sidebar = []; // Structured article sidebar data
+  const files = fs.readdirSync(root); // Read directory (files and folders), returns array
 
   files.forEach(filename => {
-    const file = path.resolve(root, filename); // 方法：将路径或路径片段的序列解析为绝对路径
-    const stat = fs.statSync(file); // 文件信息
-    if (filename === '.DS_Store') { // 过滤.DS_Store文件
+    const file = path.resolve(root, filename); // Resolve path segments into an absolute path
+    const stat = fs.statSync(file); // File info
+    if (filename === '.DS_Store') { // Filter out .DS_Store files
       return
     }
     // let [order, title, type] = filename.split('.');
@@ -140,28 +140,28 @@ function mapTocToSidebar(root, collapsable, prefix = '') {
 
     order = parseInt(order, 10);
     if (isNaN(order) || order < 0) {
-      log(chalk.yellow(`warning: 该文件 "${file}" 序号出错，请填写正确的序号`))
+      log(chalk.yellow(`warning: the file "${file}" has an invalid sequence number, please provide a correct one`))
       return;
     }
-    if (sidebar[order]) { // 判断序号是否已经存在
-      log(chalk.yellow(`warning: 该文件 "${file}" 的序号在同一级别中重复出现，将会被覆盖`))
+    if (sidebar[order]) { // Check if the sequence number already exists
+      log(chalk.yellow(`warning: the file "${file}" has a duplicate sequence number at the same level, it will be overwritten`))
     }
-    if (isDir) { // 是文件夹目录
+    if (isDir) { // Is a directory
       sidebar[order] = {
         title,
-        collapsable, // 是否可折叠，默认true
-        children: mapTocToSidebar(file, collapsable, prefix + filename + '/').sidebar // 子栏路径添加前缀
+        collapsable, // Whether collapsible, default true
+        children: mapTocToSidebar(file, collapsable, prefix + filename + '/').sidebar // Add prefix to child paths
       }
-    } else { // 是文件
+    } else { // Is a file
       if (type !== 'md') {
-        log(chalk.yellow(`warning: 该文件 "${file}" 非.md格式文件，不支持该文件类型`))
+        log(chalk.yellow(`warning: the file "${file}" is not a .md file, this file type is not supported`))
         return;
       }
-      const contentStr = fs.readFileSync(file, 'utf8') // 读取md文件内容，返回字符串
-      const { data } = matter(contentStr, {}) // 解析出front matter数据
+      const contentStr = fs.readFileSync(file, 'utf8') // Read md file content, returns string
+      const { data } = matter(contentStr, {}) // Parse front matter data
       const { permalink = '', titleTag = '' } = data || {}
 
-      // 目录页对应的永久链接，用于给面包屑提供链接
+      // Permalink for the catalogue page, used to provide breadcrumb links
       const { pageComponent } = data
       if (pageComponent && pageComponent.name === "Catalogue") {
         catalogueData[title] = permalink
@@ -172,7 +172,7 @@ function mapTocToSidebar(root, collapsable, prefix = '') {
       }
       const item = [prefix + filename, title, permalink]
       if (titleTag) item.push(titleTag)
-      sidebar[order] = item;  // [<路径>, <标题>, <永久链接>, <?标题标签>]
+      sidebar[order] = item;  // [<path>, <title>, <permalink>, <?titleTag>]
 
     }
   })

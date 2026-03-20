@@ -33,7 +33,7 @@ $mobileSidebarWidth = $sidebarWidth * 0.9
     &.sidebar-open
       .sidebar
         transform translateX(0)
-      .sidebar-mask // 蒙版在小屏中才能显示
+      .sidebar-mask // Overlay only visible on small screens
         display block
     &.no-navbar
       .sidebar
@@ -48,7 +48,7 @@ $mobileSidebarWidth = $sidebarWidth * 0.9
       margin 0.85rem -1.5rem
       border-radius 0
 
-// 侧边栏显示隐藏的适配
+// Sidebar show/hide adaptation
 @media (min-width: ($MQMobile + 1px)) // 720px
   .theme-container
     .sidebar-hover-trigger

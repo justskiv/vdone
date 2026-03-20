@@ -35,19 +35,19 @@
       <slot name="sidebar-bottom" #bottom /> -->
     </Sidebar>
 
-    <!-- 首页 -->
+    <!-- Home page -->
     <Home v-if="$page.frontmatter.home" />
 
-    <!-- 分类页 -->
+    <!-- Categories page -->
     <CategoriesPage v-else-if="$page.frontmatter.categoriesPage" />
 
-    <!-- 标签页 -->
+    <!-- Tags page -->
     <TagsPage v-else-if="$page.frontmatter.tagsPage" />
 
-    <!-- 归档页 -->
+    <!-- Archives page -->
     <ArchivesPage v-else-if="$page.frontmatter.archivesPage" />
 
-    <!-- 文章页或其他页 -->
+    <!-- Article page or other pages -->
     <Page v-else :sidebar-items="sidebarItems">
       <template #top v-if="pageSlotTop">
         <div class="page-slot page-slot-top" v-html="pageSlotTop"></div>
@@ -71,7 +71,7 @@
 
     <BodyBgImg v-if="$themeConfig.bodyBgImg" />
 
-    <!-- 自定义html插入左右下角的小窗口 -->
+    <!-- Custom HTML windows in bottom-left and bottom-right corners -->
     <div
       class="custom-html-window custom-html-window-lb"
       v-if="windowLB"
@@ -107,11 +107,11 @@ import Buttons from '@theme/components/Buttons.vue'
 import Footer from '@theme/components/Footer'
 import BodyBgImg from '@theme/components/BodyBgImg'
 import { resolveSidebarItems } from '../util'
-import storage from 'good-storage' // 本地存储
+import storage from 'good-storage' // Local storage
 import _ from 'lodash'
 
 const MOBILE_DESKTOP_BREAKPOINT = 719 // refer to config.styl
-const NAVBAR_HEIGHT = 58 // 导航栏高度
+const NAVBAR_HEIGHT = 58 // Navbar height
 
 export default {
   components: { Home, Navbar, Page, CategoriesPage, TagsPage, ArchivesPage, Sidebar, Footer, Buttons, BodyBgImg },
@@ -196,12 +196,12 @@ export default {
       return [
         {
           'no-navbar': !this.shouldShowNavbar,
-          'hide-navbar': this.hideNavbar, // 向下滚动隐藏导航栏
+          'hide-navbar': this.hideNavbar, // Hide navbar on scroll down
           'sidebar-open': this.isSidebarOpen,
           'no-sidebar': !this.shouldShowSidebar,
           'have-rightmenu': this.showRightMenu,
           'have-body-img': this.$themeConfig.bodyBgImg,
-          'only-sidebarItem': this.sidebarItems.length === 1 && this.sidebarItems[0].type === 'page', // 左侧边栏只有一项时
+          'only-sidebarItem': this.sidebarItems.length === 1 && this.sidebarItems[0].type === 'page', // When left sidebar has only one item
         },
         userPageClass
       ]
@@ -215,19 +215,19 @@ export default {
   },
   beforeMount() {
     this.isSidebarOpenOfclientWidth()
-    const mode = storage.get('mode') // 不放在created是因为vuepress不能在created访问浏览器api，如window
+    const mode = storage.get('mode') // Not in created() because VuePress cannot access browser APIs (e.g. window) during SSR
     const { defaultMode } = this.$themeConfig
 
     if (defaultMode && defaultMode !== 'auto' && !mode ) {
       this.themeMode = defaultMode
-    } else if(!mode || mode === 'auto' || defaultMode === 'auto') { // 当未切换过模式，或模式处于'跟随系统'时
+    } else if(!mode || mode === 'auto' || defaultMode === 'auto') { // When mode has not been switched, or mode is 'Follow System'
       this._autoMode()
     } else {
       this.themeMode = mode
     }
     this.setBodyClass()
 
-    // 引入图标库
+    // Import icon library
     const social = this.$themeConfig.social
     if (social && social.iconfontCssFile) {
       let linkElm = document.createElement("link")
@@ -238,7 +238,7 @@ export default {
     }
   },
   mounted() {
-    // 初始化页面时链接锚点无法跳转到指定id的解决方案
+    // Fix: anchor links not scrolling to the target id on initial page load
     const hash = document.location.hash;
     if (hash.length > 1) {
       const id = decodeURIComponent(hash.substring(1))
@@ -246,20 +246,20 @@ export default {
       if (element) element.scrollIntoView()
     }
 
-    // 解决移动端初始化页面时侧边栏闪现的问题
+    // Fix: sidebar flashing on mobile during initial page load
     this.showSidebar = true
     this.$router.afterEach(() => {
       this.isSidebarOpenOfclientWidth()
     })
 
-    // 向下滚动收起导航栏
+    // Collapse navbar on scroll down
     let p = 0, t = 0;
     window.addEventListener('scroll', _.throttle(() => {
-      if (!this.isSidebarOpen) { // 侧边栏关闭时
+      if (!this.isSidebarOpen) { // When sidebar is closed
         p = this.getScrollTop()
-        if (t < p && p > NAVBAR_HEIGHT) { // 向下滚动
+        if (t < p && p > NAVBAR_HEIGHT) { // Scrolling down
           this.hideNavbar = true
-        } else { // 向上
+        } else { // Scrolling up
           this.hideNavbar = false
         }
         setTimeout(() => { t = p }, 0)
@@ -268,7 +268,7 @@ export default {
   },
   watch: {
     isSidebarOpen() {
-      if (this.isSidebarOpen) {  // 侧边栏打开时，恢复导航栏显示
+      if (this.isSidebarOpen) {  // When sidebar is open, restore navbar visibility
         this.hideNavbar = false
       }
     },
@@ -301,7 +301,7 @@ export default {
       this.$emit('toggle-sidebar', this.isSidebarOpen)
     },
     _autoMode() {
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) { // 系统处于深色模式
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) { // System is in dark mode
         this.themeMode = 'dark'
       } else {
         this.themeMode = 'light'

@@ -127,7 +127,7 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
     // category: false, // enable category, default true
     // tag: false, // enable tags, default true
     // archive: false, // enable archives, default true
-    // categoryText: '随笔', // default category for fragmented articles (_posts), default '随笔'
+    // categoryText: 'Essay', // default category for fragmented articles (_posts), default 'Essay'
 
     // pageStyle: 'line', // page style: 'card' | 'line' (only works without bodyBgImg), default 'card'
 
@@ -210,7 +210,7 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
       'meta',
       {
         name: 'keywords',
-        content: '前端博客,个人技术博客,前端,前端开发,前端框架,web前端,前端面试题,技术文档,学习,面试,JavaScript,js,ES6,TypeScript,vue,React,python,css3,html5,Node,git,github,markdown',
+        content: 'frontend blog,tech blog,frontend,frontend development,frontend frameworks,web frontend,frontend interview,technical docs,learning,interview,JavaScript,js,ES6,TypeScript,vue,React,python,css3,html5,Node,git,github,markdown',
       },
     ],
     ['meta', { name: 'theme-color', content: '#11a8cd' }], // mobile browser theme color
@@ -232,21 +232,21 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
       {
         thirdparty: [
           {
-            title: '在MDN中搜索',
-            frontUrl: 'https://developer.mozilla.org/zh-CN/search?q=',
+            title: 'Search on MDN',
+            frontUrl: 'https://developer.mozilla.org/en-US/search?q=',
             behindUrl: '',
           },
           {
-            title: '在Runoob中搜索',
+            title: 'Search on Runoob',
             frontUrl: 'https://www.runoob.com/?s=',
           },
           {
-            title: '在Vue API中搜索',
-            frontUrl: 'https://cn.vuejs.org/v2/api/#',
+            title: 'Search Vue API',
+            frontUrl: 'https://v2.vuejs.org/v2/api/#',
           },
           {
-            title: '在Bing中搜索',
-            frontUrl: 'https://cn.bing.com/search?q=',
+            title: 'Search on Bing',
+            frontUrl: 'https://www.bing.com/search?q=',
           },
         ],
       }
@@ -256,7 +256,7 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
       'one-click-copy', // code block copy button
       {
         copySelector: ['div[class*="language-"] pre', 'div[class*="aside-code"] aside'],
-        copyMessage: '复制成功',
+        copyMessage: 'Copied',
         duration: 1000,
         showInMobile: false,
       },

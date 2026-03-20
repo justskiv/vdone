@@ -2,15 +2,15 @@ const path = require('path')
 const setFrontmatter = require('./node_utils/setFrontmatter')
 const getSidebarData = require('./node_utils/getSidebarData')
 const { createPage, deletePage } = require('./node_utils/handlePage')
-const chalk = require('chalk') // 命令行打印美化
-const yaml = require('js-yaml') // yaml转js
+const chalk = require('chalk') // CLI output styling
+const yaml = require('js-yaml') // YAML to JS conversion
 const log = console.log
 
-// md容器名
+// Markdown container names
 const CARD_LIST = 'cardList'
 const CARD_IMG_LIST = 'cardImgList'
 
-// siteConfig base 配置
+// siteConfig base setting
 let base = ''
 
 
@@ -18,41 +18,41 @@ let base = ''
 module.exports = (options, ctx) => {
   const { sourceDir, themeConfig, siteConfig } = ctx
 
-  // base路径
+  // Base path
   base = siteConfig.base || ''
 
-  // 自动设置front matter
+  // Automatically set front matter
   setFrontmatter(sourceDir, themeConfig)
 
-  // 自动生成结构化侧边栏
+  // Auto-generate structured sidebar
   const sidebar = themeConfig.sidebar
   if (sidebar === 'structuring' || sidebar && sidebar.mode === 'structuring') {
     const collapsable = themeConfig.sidebar.collapsable === false ? false : true
     const sidebarData = getSidebarData(sourceDir, collapsable)
     if (sidebarData) {
       themeConfig.sidebar = sidebarData
-      log(chalk.blue('tip ') + chalk.green('add sidebar data. 成功生成侧边栏数据。'))
+      log(chalk.blue('tip ') + chalk.green('Successfully generated sidebar data.'))
     } else {
       themeConfig.sidebar = 'auto'
-      log(chalk.yellow('warning: fail to add sidebar data, switch to "auto". 未能添加侧边栏数据，将切换为“auto”。'))
+      log(chalk.yellow('Warning: Failed to generate sidebar data, switching to “auto”.'))
     }
   }
 
-  // 分类页
+  // Categories page
   if (themeConfig.category !== false) {
     createPage(sourceDir, 'categoriesPage')
   } else {
     deletePage(sourceDir, 'categoriesPage')
   }
 
-  // 标签页
+  // Tags page
   if (themeConfig.tag !== false) {
     createPage(sourceDir, 'tagsPage')
   } else {
     deletePage(sourceDir, 'tagsPage')
   }
 
-  // 归档页
+  // Archives page
   if (themeConfig.archive !== false) {
     createPage(sourceDir, 'archivesPage')
   } else {
@@ -87,28 +87,28 @@ module.exports = (options, ctx) => {
       ['container', {
         type: 'note',
         defaultTitle: {
-          '/': '笔记',
+          '/': 'Note',
           '/en/': 'NOTE'
         }
       }],
       ['container', {
         type: 'tip',
         defaultTitle: {
-          '/': '提示',
+          '/': 'Tip',
           '/en/': 'TIP'
         }
       }],
       ['container', {
         type: 'warning',
         defaultTitle: {
-          '/': '注意',
+          '/': 'Warning',
           '/en/': 'WARNING'
         }
       }],
       ['container', {
         type: 'danger',
         defaultTitle: {
-          '/': '警告',
+          '/': 'Danger',
           '/en/': 'WARNING'
         }
       }],
@@ -126,36 +126,36 @@ module.exports = (options, ctx) => {
         before: info => `<details class="custom-block details">${info ? `<summary>${info}</summary>` : ''}\n`,
         after: () => '</details>\n',
         defaultTitle: {
-          '/': '点击查看',
+          '/': 'Details',
           '/en/': 'DETAILS'
         }
       }],
 
-      // 内容居中容器
+      // Center-aligned content container
       ['container', {
         type: 'center',
         before: info => `<div class="center-container">`,
         after: () => '</div>'
       }],
 
-      // 卡片列表
+      // Card list
       [
         'container',
         {
           type: CARD_LIST,
           render: (tokens, idx) => {
-            // tokens 是整个md文件的虚拟dom结构数组
-            // idx 是tokens中':::' 所在的索引，而且是当前指定type的':::'，分别有开始和结束两次的idx
-            // if (tokens[idx].nesting === 1) { // 开头的 ':::' 标记
-            // } else { // 结束的 ':::' 标记
+            // tokens is the virtual DOM structure array for the entire md file
+            // idx is the index of ':::' in tokens for the current specified type, occurring twice for opening and closing
+            // if (tokens[idx].nesting === 1) { // opening ':::' marker
+            // } else { // closing ':::' marker
             // }
-            // 注意：修改这里面的代码后需要在md文件保存一下才会重新执行渲染
+            // Note: after modifying code here, you need to save the md file to trigger re-rendering
             return renderCardList(tokens, idx, CARD_LIST)
           }
         },
       ],
 
-      // 图文卡片列表
+      // Image card list
       [
         'container',
         {
@@ -172,14 +172,14 @@ module.exports = (options, ctx) => {
 }
 
 
-// 渲染md容器的卡片列表
+// Render the card list for the md container
 function renderCardList(tokens, idx, type) {
   const END_TYPE = `container_${type}_close`,
     _tokens$idx = tokens[idx],
     nesting = _tokens$idx.nesting,
     info = _tokens$idx.info;
 
-  if (nesting === 1) { // 渲染开头的 ':::' 标记
+  if (nesting === 1) { // Render the opening ':::' marker
     let yamlStr = '';
 
     for (let i = idx; i < tokens.length; i++) {
@@ -187,19 +187,19 @@ function renderCardList(tokens, idx, type) {
         type = _tokens$i.type,
         content = _tokens$i.content,
         _info = _tokens$i.info;
-      if (type === END_TYPE) break; // 遇到结束的 ':::' 时
+      if (type === END_TYPE) break; // When encountering the closing ':::'
       if (!content) continue;
-      if (type === 'fence' && _info === 'yaml') { // 是代码块类型，并且是yaml代码
+      if (type === 'fence' && _info === 'yaml') { // Is a code block of yaml type
         yamlStr = content
       }
     }
 
-    if (yamlStr) { // 正确解析出yaml字符串后
-      const dataObj = yaml.safeLoad(yamlStr) // 将yaml字符串解析成js对象
+    if (yamlStr) { // After successfully parsing the yaml string
+      const dataObj = yaml.safeLoad(yamlStr) // Parse yaml string into JS object
       let dataList = []
       let config = {}
 
-      if (dataObj) { // 正确解析出数据对象
+      if (dataObj) { // Successfully parsed the data object
         if (Array.isArray(dataObj)) {
           dataList = dataObj
         } else {
@@ -208,31 +208,31 @@ function renderCardList(tokens, idx, type) {
         }
       }
 
-      if (dataList && dataList.length) { // 有列表数据
+      if (dataList && dataList.length) { // Has list data
 
-        // 每行显示几个
+        // Number of items to display per row
         let row = Number(info.split(' ').pop())
         if (!row || row > 4 || row < 1) {
-          row = 3 // 默认 3
+          row = 3 // Default 3
         }
 
         let listDOM = ''
-        if (type === CARD_LIST) { // 普通卡片列表
+        if (type === CARD_LIST) { // Standard card list
           listDOM = getCardListDOM(dataList, row, config)
-        } else if (type === CARD_IMG_LIST) { // 卡片图片列表
+        } else if (type === CARD_IMG_LIST) { // Image card list
           listDOM = getCardImgListDOM(dataList, row, config)
         }
 
         return `<div class="${type}Container"><div class="card-list">${listDOM}</div>`
       }
     }
-  } else { // 渲染':::' 结尾
+  } else { // Render the closing ':::'
     return '</div>'
   }
 }
 
 
-// 将数据解析成DOM结构 - 普通卡片列表
+// Parse data into DOM structure - standard card list
 function getCardListDOM(dataList, row, config) {
   const { target = '_blank' } = config
   let listDOM = ''
@@ -253,7 +253,7 @@ function getCardListDOM(dataList, row, config) {
 }
 
 
-// 将数据解析成DOM结构 - 图文卡片列表
+// Parse data into DOM structure - image card list
 function getCardImgListDOM(dataList, row, config) {
   const { imgHeight = 'auto', objectFit = 'cover', lineClamp = 1, target = '_blank' } = config
 
@@ -281,7 +281,7 @@ function getCardImgListDOM(dataList, row, config) {
   return listDOM
 }
 
-// 添加base路径
+// Prepend base path
 function withBase(path) {
   if (!path) return '';
   if (base && path.charAt(0) === '/') {

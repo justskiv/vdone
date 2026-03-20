@@ -1,6 +1,6 @@
 <template>
   <div class="home-wrapper">
-    <!-- banner块 s -->
+    <!-- Banner section start -->
     <div
       class="banner"
       :class="{ 'hide-banner': !showBanner }"
@@ -29,7 +29,7 @@
           </p>
         </header>
 
-        <!-- PC端features块 s -->
+        <!-- Desktop features section start -->
         <div class="features" v-if="hasFeatures && !isMQMobile">
           <div
             class="feature"
@@ -58,11 +58,11 @@
             </a>
           </div>
         </div>
-        <!-- PC端features块 e -->
+        <!-- Desktop features section end -->
       </div>
 
-      <!-- 移动端features块 s -->
-      <!-- isMQMobile放到v-if上线后会报错 -->
+      <!-- Mobile features section start -->
+      <!-- Placing isMQMobile in v-if causes errors after deployment -->
       <div class="slide-banner" v-if="hasFeatures" v-show="isMQMobile">
         <div class="banner-wrapper">
           <div class="slide-banner-scroll" ref="slide">
@@ -105,13 +105,13 @@
           </div>
         </div>
       </div>
-      <!-- 移动端features块 e -->
+      <!-- Mobile features section end -->
     </div>
-    <!-- banner块 e -->
+    <!-- Banner section end -->
 
     <MainLayout>
       <template #mainLeft>
-        <!-- 简约版文章列表 -->
+        <!-- Simple post list -->
         <UpdateArticle
           class="card-box"
           v-if="homeData.postList === 'simple'"
@@ -121,7 +121,7 @@
           "
         />
 
-        <!-- 详情版文章列表 -->
+        <!-- Detailed post list -->
         <template
           v-else-if="!homeData.postList || homeData.postList === 'detailed'"
         >
@@ -189,9 +189,9 @@ export default {
       playTimer: 0,
       mark: 0,
 
-      total: 0, // 总长
-      perPage: 10, // 每页长
-      currentPage: 1// 当前页
+      total: 0, // Total count
+      perPage: 10, // Items per page
+      currentPage: 1// Current page
     }
   },
   computed: {
@@ -207,7 +207,7 @@ export default {
       const { htmlModules } = this.$themeConfig
       return htmlModules ? htmlModules.homeSidebarB : ''
     },
-    showBanner() { // 当分页不在第一页时隐藏banner栏
+    showBanner() { // Hide banner when not on the first page
       return this.$route.query.p
         && this.$route.query.p != 1
         && (!this.homeData.postList || this.homeData.postList === 'detailed')
@@ -215,21 +215,21 @@ export default {
     },
     bannerBgStyle() {
       let bannerBg = this.homeData.bannerBg
-      if (!bannerBg || bannerBg === 'auto') { // 默认
-        if (this.$themeConfig.bodyBgImg) { // 当有bodyBgImg时，不显示背景
+      if (!bannerBg || bannerBg === 'auto') { // Default
+        if (this.$themeConfig.bodyBgImg) { // When bodyBgImg exists, hide background
           return ''
-        } else { // 网格纹背景
+        } else { // Grid pattern background
           return 'background: rgb(40,40,45) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABOSURBVFhH7c6xCQAgDAVRR9A6E4hLu4uLiWJ7tSnuQcIvr2TRYsw3/zOGGEOMIcYQY4gxxBhiDDGGGEOMIcYQY4gxxBhiDLkx52W4Gn1tuslCtHJvL54AAAAASUVORK5CYII=)'
         }
-      } else if (bannerBg === 'none') { // 无背景
+      } else if (bannerBg === 'none') { // No background
         if (this.$themeConfig.bodyBgImg) {
           return ''
         } else {
           return 'background: var(--mainBg);color: var(--textColor)'
         }
-      } else if (bannerBg.indexOf('background:') > -1) { // 自定义背景样式
+      } else if (bannerBg.indexOf('background:') > -1) { // Custom background style
         return bannerBg
-      } else if (bannerBg.indexOf('.') > -1) { // 大图
+      } else if (bannerBg.indexOf('.') > -1) { // Large image
         return `background: url(${this.$withBase(bannerBg)}) center center / cover no-repeat`
       }
 
@@ -246,7 +246,7 @@ export default {
     this.total = this.$sortPosts.length
   },
   beforeMount() {
-    this.isMQMobile = window.innerWidth < MOBILE_DESKTOP_BREAKPOINT ? true : false; // vupress在打包时不能在beforeCreate(),created()访问浏览器api（如window）
+    this.isMQMobile = window.innerWidth < MOBILE_DESKTOP_BREAKPOINT ? true : false; // VuePress cannot access browser APIs (e.g. window) in beforeCreate()/created() during build
   },
   mounted() {
     if (this.$route.query.p) {
@@ -293,16 +293,16 @@ export default {
     init() {
       clearTimeout(this.playTimer)
       this.slide = new BScroll(this.$refs.slide, {
-        scrollX: true, // x轴滚动
-        scrollY: false, // y轴滚动
+        scrollX: true, // X-axis scrolling
+        scrollY: false, // Y-axis scrolling
         slide: {
           loop: true,
           threshold: 100
         },
-        useTransition: true, // 使用css3 transition动画
+        useTransition: true, // Use CSS3 transition animation
         momentum: false,
-        bounce: false, // 回弹
-        stopPropagation: false, // 是否阻止事件冒泡
+        bounce: false, // Bounce back
+        stopPropagation: false, // Whether to stop event propagation
         probeType: 2,
         preventDefault: false
       })
@@ -311,7 +311,7 @@ export default {
       this.slide.on('beforeScrollStart', () => {
         clearTimeout(this.playTimer)
       })
-      // user touched the slide done
+      // User finished touch interaction
       this.slide.on('scrollEnd', () => {
         this.autoGoNext()
       })
@@ -326,7 +326,7 @@ export default {
         this.slide.next()
       }, 4000)
     },
-    handlePagination(i) { // 分页
+    handlePagination(i) { // Pagination
       this.currentPage = i
     },
     getScrollTop() {
@@ -384,7 +384,7 @@ export default {
           color #fff
           &:hover
             background-color lighten($accentColor, 10%)
-      // pc端features
+      // Desktop features
       .features
         padding 2rem 0
         margin-top 2.5rem
@@ -419,7 +419,7 @@ export default {
           animation-play-state running
         h2, p
           color $accentColor
-    // 移动端滑动图标
+    // Mobile slide icons
     .slide-banner
       margin-top 2rem
       .banner-wrapper
@@ -463,7 +463,7 @@ export default {
           opacity 0.9
           &.active
             opacity 0.5
-  // 分页不在第一页时，隐藏banner栏
+  // Hide banner when pagination is not on the first page
   .banner.hide-banner
     display none
     & + .main-wrapper
@@ -492,7 +492,7 @@ export default {
     transform translate(0, 0)
   to
     transform translate(0, 8px)
-// 1025px以下
+// Below 1025px
 @media (max-width 1025px)
   .home-wrapper
     .banner
@@ -509,14 +509,14 @@ export default {
             .feature-img
               width 9rem
               height 9rem
-// 719px以下
+// Below 719px
 @media (max-width $MQMobile)
   .home-wrapper
     .banner
       .banner-conent
         .features
           display none !important
-// 419px以下
+// Below 419px
 @media (max-width $MQMobileNarrow)
   .home-wrapper
     .banner-conent
