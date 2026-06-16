@@ -1,6 +1,6 @@
 ---
 categoriesPage: true
-title: 分类
+title: Categories
 permalink: /categories/
 article: false
 ---

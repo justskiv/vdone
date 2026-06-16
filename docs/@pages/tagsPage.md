@@ -1,6 +1,6 @@
 ---
 tagsPage: true
-title: 标签
+title: Tags
 permalink: /tags/
 article: false
 ---

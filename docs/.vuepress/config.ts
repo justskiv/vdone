@@ -24,6 +24,13 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
   },
   base: '/vdone/', // Required for GitHub Pages project site (justskiv.github.io/vdone)
 
+  configureWebpack: {
+    watchOptions: {
+      poll: 1000,
+      ignored: /node_modules/,
+    },
+  },
+
   // Theme configuration
   themeConfig: {
     // Navigation

@@ -3,11 +3,11 @@ home: true
 # heroImage: /img/web.png
 heroText: VDone Demo Blog
 tagline: A live showcase of the VDone theme for VuePress.
-# actionText: 立刻进入 →
+# actionText: Enter Now →
 # actionLink: /web/
-# bannerBg: auto # auto => 网格纹背景(有bodyBgImg时无背景)，默认 | none => 无 | '大图地址' | background: 自定义背景样式       提示：如发现文本颜色不适应你的背景时可以到palette.styl修改$bannerTextColor变量
+# bannerBg: auto # auto => grid-pattern background (no background when bodyBgImg is set), default | none => none | 'large image URL' | background: custom background style       Tip: if you find the text color doesn't suit your background, you can modify the $bannerTextColor variable in palette.styl
 
-features: # 可选的
+features: # optional
   - title: Frontend
     details: JavaScript, ES6, Vue framework and modern web technologies
     link: /web/
@@ -20,8 +20,8 @@ features: # 可选的
     details: Technical articles, tutorials, best practices and reference guides
     link: /technology/
     imgUrl: /img/other.png
-# 文章列表显示方式: detailed 默认，显示详细版文章列表（包括作者、分类、标签、摘要、分页等）| simple => 显示简约版文章列表（仅标题和日期）| none 不显示文章列表
+# Post list display mode: detailed (default) shows the detailed post list (including author, categories, tags, excerpt, pagination, etc.) | simple => shows the simplified post list (title and date only) | none hides the post list
 # postList: detailed
-# simplePostListLength: 10 # 简约版文章列表显示的文章数量，默认10。（仅在postList设置为simple时生效）
-# hideRightBar: true # 是否隐藏右侧边栏
+# simplePostListLength: 10 # number of posts shown in the simplified post list, default 10. (only takes effect when postList is set to simple)
+# hideRightBar: true # whether to hide the right sidebar
 ---
