@@ -218,12 +218,14 @@ export default {
     const mode = storage.get('mode') // Not in created() because VuePress cannot access browser APIs (e.g. window) during SSR
     const { defaultMode } = this.$themeConfig
 
-    if (defaultMode && defaultMode !== 'auto' && !mode ) {
-      this.themeMode = defaultMode
-    } else if(!mode || mode === 'auto' || defaultMode === 'auto') { // When mode has not been switched, or mode is 'Follow System'
-      this._autoMode()
-    } else {
+    if (mode && mode !== 'auto') { // Explicit user choice (legacy mode or ported theme) always wins
       this.themeMode = mode
+    } else if (mode === 'auto') { // User explicitly chose 'Follow System'
+      this._autoMode()
+    } else if (defaultMode && defaultMode !== 'auto') { // No stored choice: fall back to configured default
+      this.themeMode = defaultMode
+    } else { // No stored choice and no explicit default
+      this._autoMode()
     }
     this.setBodyClass()
 
@@ -284,7 +286,11 @@ export default {
     setBodyClass() {
       let { pageStyle = 'card', bodyBgImg } = this.$themeConfig
       if (pageStyle !== 'card' && pageStyle !== 'line' || bodyBgImg) { pageStyle = 'card' }
-      document.body.className = `theme-mode-${this.themeMode} theme-style-${pageStyle}`
+      // Dark themes share dark-specific adaptations (translucent custom blocks,
+      // card borders, background patterns) via a generic `theme-dark` class.
+      const darkThemes = ['dark', 'coal', 'graphite', 'warm', 'githubDark', 'oneDark', 'nord']
+      const darkClass = darkThemes.indexOf(this.themeMode) !== -1 ? ' theme-dark' : ''
+      document.body.className = `theme-mode-${this.themeMode} theme-style-${pageStyle}${darkClass}`
     },
     getScrollTop() {
       return window.pageYOffset

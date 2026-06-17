@@ -156,7 +156,7 @@ export default defineConfig4CustomTheme<VdoneThemeConfig>({
     // sidebarOpen: false, // initial sidebar state, default true
     // pageButton: false, // show quick page flip buttons, default true
 
-    // defaultMode: 'auto', // default appearance: 'auto' | 'light' | 'dark' | 'read', default 'auto'
+    // defaultMode: 'auto', // default appearance. Engine modes: 'auto' | 'light' | 'dark' | 'read'. Ported themes: 'coal' | 'graphite' | 'warm' | 'white' | 'githubDark' | 'oneDark' | 'nord'. Default 'auto'
 
     // Sidebar: 'structuring' | { mode: 'structuring', collapsable: Boolean} | 'auto' | custom
     // Note: directory page data depends on structured sidebar

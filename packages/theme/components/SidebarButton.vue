@@ -54,9 +54,9 @@
     // transition left 0.2s ease
     transition all .2s
     &:hover
-      background $accentColor
-      color #fff
-      box-shadow 0 0 6px $accentColor
+      background var(--accentColor)
+      color var(--onAccentColor)
+      box-shadow 0 0 6px var(--accentColor)
     .icon
       display inline
       width 1rem

@@ -8,6 +8,136 @@
 @require './wrapper'
 @require './toc'
 @require './markdown-container'
+@require './code-theme'
+
+
+//***Color modes & themes***//
+// These selectors live here (global app stylesheet, compiled once) — NOT in
+// palette.styl, which VuePress injects into every SFC. $accentColor and the
+// codeTheme* mixins come from palette.styl (injected) and ./code-theme above.
+
+// Accent as a CSS variable. The original $accentColor was compile-time only,
+// so the accent could not vary per theme. Legacy modes and any uncovered case
+// inherit the teal default from :root; ported themes override --accentColor.
+// --accentLightenColor / --accentDarkenColor replace the old lighten()/darken()
+// calls and are derived from the accent at compile time (no runtime color-mix).
+:root
+  --accentColor $accentColor
+  --accentLightenColor lighten($accentColor, 9%)
+  --accentDarkenColor darken($accentColor, 10%)
+  --onAccentColor #fff
+  --hoverBg #f8f8f8
+
+// --- Original engine modes (kept as-is) ---
+.theme-mode-light
+  --bodyBg: #f4f4f4
+  --mainBg: rgba(255,255,255,1)
+  --sidebarBg: rgba(255,255,255,.8)
+  --blurBg: rgba(255,255,255,.9)
+  --customBlockBg: #f1f1f1
+  --textColor: #00323c
+  --textLightenColor: #0085AD
+  --borderColor: rgba(0,0,0,.12)
+  --codeBg: #f6f6f6
+  --codeColor: #525252
+  codeThemeLight()
+
+.theme-mode-dark
+  --bodyBg: rgb(39,39,43)
+  --mainBg: rgba(30,30,34,1)
+  --sidebarBg: rgba(30,30,34,.8)
+  --blurBg: rgba(30,30,34,.8)
+  --customBlockBg: rgb(39,39,43)
+  --textColor: rgb(155,155,170)
+  --textLightenColor: #0085AD
+  --borderColor: #30363d
+  --codeBg: #252526
+  --codeColor: #fff
+  --hoverBg: rgb(39,39,43)
+  codeThemeDark()
+
+.theme-mode-read
+  --bodyBg: rgb(236,236,204)
+  --mainBg: rgba(245,245,213,1)
+  --sidebarBg: rgba(245,245,213,.8)
+  --blurBg: rgba(245,245,213,.9)
+  --customBlockBg: rgb(236,236,204)
+  --textColor: #704214
+  --textLightenColor: #996633
+  --borderColor: rgba(0,0,0,.15)
+  --codeBg: #282c34
+  --codeColor: #fff
+  --hoverBg: rgb(236,236,204)
+  codeThemeDark()
+
+// Uniform background color in line page-style
+.theme-style-line.theme-mode-light
+  --bodyBg: rgba(255,255,255,1)
+.theme-style-line.theme-mode-dark
+  --bodyBg: rgba(30,30,34,1)
+.theme-style-line.theme-mode-read
+  --bodyBg: rgba(245,245,213,1)
+
+// --- Ported color themes (from ggp_stats) ---
+// Single source of truth for the ported palettes. The swatch colors in
+// components/Buttons.vue mirror these values (the Stylus<->JS boundary makes
+// some duplication unavoidable). Each theme is applied via the body class
+// theme-mode-<name>, exactly like the modes above.
+//
+// Token mapping ggp_stats -> vdone CSS vars:
+//   bg -> --bodyBg, card -> --mainBg, bg2 -> --customBlockBg/--codeBg,
+//   border -> --borderColor, text -> --textColor, text2 -> --codeColor,
+//   accent (theme link color) -> --accentColor/--textLightenColor.
+defineTheme(name, bg, card, bg2, border, text, text2, accent, onAccent, hover, isDark)
+  .theme-mode-{name}
+    --bodyBg bg
+    --mainBg card
+    --sidebarBg rgba(card, .9)
+    --blurBg rgba(bg, .9)
+    --customBlockBg bg2
+    --textColor text
+    --textLightenColor accent
+    --borderColor border
+    --codeBg bg2
+    --codeColor text2
+    --accentColor accent
+    --accentLightenColor lighten(accent, 9%)
+    --accentDarkenColor darken(accent, 10%)
+    --onAccentColor onAccent
+    --hoverBg hover
+    if isDark
+      codeThemeDark()
+    else
+      codeThemeLight()
+  // In line page-style the page background unifies with the content surface.
+  .theme-style-line.theme-mode-{name}
+    --bodyBg card
+
+//           name          bg        card      bg2       border    text      text2     accent    onAccent  hover     dark
+defineTheme('coal',        #141414,  #1c1c1c,  #0d0d0d,  #2d2d2d,  #e0e0e0,  #bcbcbc,  #6a9fed,  #fff,     #232323,  true)
+defineTheme('graphite',    #1e1e1e,  #262626,  #161616,  #363636,  #e0e0e0,  #bcbcbc,  #6a9fed,  #fff,     #2d2d2d,  true)
+defineTheme('warm',        #100f0b,  #1a1813,  #0a0908,  #2b2820,  #e9e4d9,  #c2bbae,  #d9a35f,  #211a10,  #26241e,  true)
+defineTheme('white',       #f6f8fa,  #ffffff,  #eaeef2,  #d1d9e0,  #1f2328,  #59636e,  #0969da,  #fff,     #eff2f5,  false)
+defineTheme('githubDark',  #0d1117,  #161b22,  #010409,  #30363d,  #e6edf3,  #c9d1d9,  #58a6ff,  #fff,     #1c2128,  true)
+defineTheme('oneDark',     #21252b,  #282c34,  #1a1e23,  #3e4451,  #dde2ec,  #c0c7d5,  #61afef,  #fff,     #2f343d,  true)
+defineTheme('nord',        #2e3440,  #373e4c,  #292f3a,  #404857,  #f5f7fb,  #e3e8f1,  #88c0d0,  #10231f,  #3f4757,  true)
+
+// --- Plugin accents (search box + nprogress) ---
+// @vuepress/search and @vuepress/plugin-nprogress (both registered by this
+// theme) bake $accentColor into a fixed teal inside node_modules. Re-point
+// their visible accents to the live theme variable so search and the loading
+// bar go native per theme.
+.search-box input:focus
+  border-color var(--accentColor) !important
+.search-box .suggestion.focused a
+  color var(--accentColor) !important
+#nprogress .bar
+  background var(--accentColor) !important
+#nprogress .peg
+  box-shadow 0 0 10px var(--accentColor), 0 0 5px var(--accentColor) !important
+#nprogress .spinner-icon
+  border-top-color var(--accentColor) !important
+  border-left-color var(--accentColor) !important
 
 
 html, body
@@ -159,12 +289,12 @@ body .search-box
 
 a
   font-weight 500
-  color $accentColor
+  color var(--accentColor)
   text-decoration none
 
 p a code
   font-weight 400
-  color $accentColor
+  color var(--accentColor)
 
 kbd
   background #eee

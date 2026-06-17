@@ -85,9 +85,9 @@ export default {
       &.more
         // color $accentColor
       &:not(.active):hover
-        color $accentColor
-        background #f8f8f8
-        border-color $accentColor
+        color var(--accentColor)
+        background var(--hoverBg)
+        border-color var(--accentColor)
         span
           opacity 0.8
       span
@@ -107,11 +107,9 @@ export default {
         right 0.95rem
         top 8px
       &.active
-        background $accentColor
+        background var(--accentColor)
         color var(--mainBg)
         padding-left 0.8rem
         border-radius 1px
         border-color transparent
-.theme-mode-dark .categories-wrapper .categories a:not(.active):hover, .theme-mode-read .categories-wrapper .categories a:not(.active):hover
-  background var(--customBlockBg)
 </style>

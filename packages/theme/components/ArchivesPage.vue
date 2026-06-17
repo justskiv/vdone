@@ -170,8 +170,8 @@ export default {
         line-height 1.2rem
         &:hover
           padding-left 2.5rem
-          color $accentColor
-          background #f9f9f9
+          color var(--accentColor)
+          background var(--hoverBg)
         @media (max-width $contentWidth + 80)
           padding 0.5rem 1rem
           font-weight normal
@@ -197,8 +197,6 @@ export default {
       text-align center
       margin-top 1rem
       opacity 0.5
-.theme-mode-dark .archives-page .theme-vdone-wrapper li a:hover, .theme-mode-read .archives-page .theme-vdone-wrapper li a:hover
-  background var(--customBlockBg)
 .hide-navbar
   .archives-page
     .theme-vdone-wrapper

@@ -159,7 +159,7 @@ export default {
     opacity 0.9
     cursor pointer
     &:hover
-      color $accentColor
+      color var(--accentColor)
     &.ellipsis
       opacity 0.5
       &::before
@@ -207,7 +207,7 @@ export default {
       line-height 2.5rem
       margin 0.3rem
       &.active
-        background $accentColor
+        background var(--accentColor)
         color var(--mainBg)
 @media (max-width 800px)
   .pagination

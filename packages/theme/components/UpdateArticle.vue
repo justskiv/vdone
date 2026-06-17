@@ -151,7 +151,7 @@ export default {
           &:hover
             text-decoration underline
           &.more
-            color $accentColor
+            color var(--accentColor)
         .date
           width 50px
           margin-right 15px

@@ -117,10 +117,10 @@ export default {
           left 0
           width 3px
           height 14px
-          background $accentColor
+          background var(--accentColor)
           border-radius 0 4px 4px 0
         a
-          color $accentColor
+          color var(--accentColor)
           opacity 1
       a
         color var(--textColor)
@@ -133,7 +133,7 @@ export default {
         &:hover
           opacity 1
     &:hover
-      color $accentColor
+      color var(--accentColor)
 .have-body-img
   .right-menu-wrapper
     .right-menu-margin

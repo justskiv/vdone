@@ -15,15 +15,16 @@
     color var(--textColor)
     background rgba(180,180,180,0.1)!important
   .gt-btn
-    border-color $accentColor!important
-    background-color $accentColor!important
+    border-color var(--accentColor)!important
+    background-color var(--accentColor)!important
+    color var(--onAccentColor)!important
   .gt-btn-preview
     background-color rgba(255,255,255,0)!important
-    color $accentColor!important
+    color var(--accentColor)!important
   a
-    color $accentColor!important
+    color var(--accentColor)!important
   .gt-svg svg
-    fill $accentColor!important
+    fill var(--accentColor)!important
   .gt-comment-content,.gt-comment-admin .gt-comment-content
     background-color rgba(150,150,150,0.1)!important
     &:hover
@@ -37,8 +38,8 @@
   position: relative;
 .qq::after
   content: "Chat";
-  background: $accentColor;
-  color:#fff;
+  background: var(--accentColor);
+  color: var(--onAccentColor);
   padding: 0 5px;
   border-radius: 10px;
   font-size:12px;
@@ -53,10 +54,10 @@ body .vuepress-plugin-demo-block__wrapper
     border-color rgba(160,160,160,.3)
   .vuepress-plugin-demo-block__footer:hover
     .vuepress-plugin-demo-block__expand::before
-      border-top-color: $accentColor !important;
-      border-bottom-color: $accentColor !important;
+      border-top-color: var(--accentColor) !important;
+      border-bottom-color: var(--accentColor) !important;
     svg
-      fill: $accentColor !important;
+      fill: var(--accentColor) !important;
 
 // Full-text search box
 .suggestions
@@ -68,5 +69,5 @@ body .vuepress-plugin-demo-block__wrapper
     margin-right: -20px;
   }
   .highlight
-    color: $accentColor
+    color: var(--accentColor)
     font-weight: bold

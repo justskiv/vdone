@@ -64,10 +64,10 @@
       outline none
       cursor pointer
       &:hover
-        color $accentColor
+        color var(--accentColor)
 
-// Dark mode adaptation
-.theme-mode-dark
+// Dark mode adaptation (applies to every dark theme via the theme-dark body class)
+.theme-dark
   .custom-block
     &.warning
       background-color rgba(255, 247, 208, .2)
@@ -81,7 +81,7 @@
       background-color rgba(255, 230, 230, .4)
       color darken(red, 50%)
       a
-        color $accentColor
+        color var(--accentColor)
     &.note
       background-color rgba(243, 245, 247, .2)
       color darken(#157BAE, 0%)

@@ -102,10 +102,13 @@ export interface VdoneThemeConfig extends NoSidebar4DefaultThemeConfig {
   pageButton?: boolean;
 
   /**
-   * Default appearance mode
+   * Default appearance mode. The first four are the original engine modes;
+   * the rest are color themes ported from ggp_stats.
    * @default 'auto'
    */
-  defaultMode?: 'auto' | 'light' | 'dark' | 'read';
+  defaultMode?:
+  | 'auto' | 'light' | 'dark' | 'read'
+  | 'coal' | 'graphite' | 'warm' | 'white' | 'githubDark' | 'oneDark' | 'nord';
 
   /**
    * Sidebar configuration

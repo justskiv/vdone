@@ -176,8 +176,8 @@ export default {
   &.bg-style-6 // Dotted
     background-image radial-gradient(var(--linesColor) 1px, transparent 1px)
     background-size 10px 10px
-// Background pattern adapts to dark mode
-.theme-mode-dark
+// Background pattern adapts to dark mode (all dark themes via theme-dark)
+.theme-dark
   .theme-vdone-wrapper
     --linesColor rgba(125, 125, 125, 0.05)
 /**

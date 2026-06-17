@@ -32,11 +32,18 @@
           <li
             v-for="item in modeList"
             :key="item.KEY"
-            class="iconfont"
-            :class="[item.icon, { active: item.KEY === currentMode }]"
+            :class="{ active: item.KEY === currentMode }"
             @click="toggleMode(item.KEY)"
           >
-            {{ item.name }}
+            <span class="sw" :style="{ background: item.swatch.bg }">
+              <i
+                v-for="(dot, idx) in item.swatch.dots"
+                :key="idx"
+                :style="{ background: dot }"
+              />
+            </span>
+            <span class="name">{{ item.name }}</span>
+            <span class="check" v-show="item.KEY === currentMode">✓</span>
           </li>
         </ul>
       </transition>
@@ -58,27 +65,23 @@ export default {
       commentTop: null,
       currentMode: '',
       showModeBox: false,
+      // Every entry is an equal-rank picker item. The first four are the
+      // engine's original modes; the rest are color themes ported from
+      // ggp_stats. `swatch` colors mirror styles/palette.styl (the
+      // Stylus<->JS boundary makes this small duplication unavoidable);
+      // palette.styl is the source of truth.
       modeList: [
-        {
-          name: 'Auto',
-          icon: 'icon-zidong',
-          KEY: 'auto'
-        },
-        {
-          name: 'Light Mode',
-          icon: 'icon-rijianmoshi',
-          KEY: 'light'
-        },
-        {
-          name: 'Dark Mode',
-          icon: 'icon-yejianmoshi',
-          KEY: 'dark'
-        },
-        {
-          name: 'Reading Mode',
-          icon: 'icon-yuedu',
-          KEY: 'read'
-        }
+        { name: 'Auto', KEY: 'auto', swatch: { bg: 'linear-gradient(135deg,#f4f4f4 0 50%,#27272b 50% 100%)', dots: ['#11A8CD', '#0085AD', '#ff5722'] } },
+        { name: 'Light', KEY: 'light', swatch: { bg: '#f4f4f4', dots: ['#11A8CD', '#0085AD', '#00323c'] } },
+        { name: 'Dark', KEY: 'dark', swatch: { bg: '#27272b', dots: ['#11A8CD', '#0085AD', '#9b9baa'] } },
+        { name: 'Reading', KEY: 'read', swatch: { bg: '#ececcc', dots: ['#996633', '#704214', '#11A8CD'] } },
+        { name: 'Coal', KEY: 'coal', swatch: { bg: '#141414', dots: ['#6a9fed', '#b48ead', '#e0935a'] } },
+        { name: 'Graphite', KEY: 'graphite', swatch: { bg: '#1e1e1e', dots: ['#6a9fed', '#b48ead', '#e0935a'] } },
+        { name: 'Warm', KEY: 'warm', swatch: { bg: '#100f0b', dots: ['#d9a35f', '#9b7cf0', '#ec8a45'] } },
+        { name: 'White', KEY: 'white', swatch: { bg: '#ffffff', dots: ['#0969da', '#8250df', '#bc4c00'] } },
+        { name: 'GitHub Dark', KEY: 'githubDark', swatch: { bg: '#0d1117', dots: ['#58a6ff', '#bc8cff', '#f0883e'] } },
+        { name: 'One Dark', KEY: 'oneDark', swatch: { bg: '#21252b', dots: ['#61afef', '#c678dd', '#d19a66'] } },
+        { name: 'Nord', KEY: 'nord', swatch: { bg: '#2e3440', dots: ['#88c0d0', '#b48ead', '#d08770'] } }
       ],
       _scrollTimer: null,
       _textareaEl: null,
@@ -221,36 +224,70 @@ export default {
     transition all 0.5s
     background var(--blurBg)
     &.hover
-      background $accentColor
-      box-shadow 0 0 15px $accentColor
+      background var(--accentColor)
+      box-shadow 0 0 15px var(--accentColor)
       &:before
-        color #fff
+        color var(--onAccentColor)
     @media (any-hover hover)
       &:hover
-        background $accentColor
-        box-shadow 0 0 15px $accentColor
+        background var(--accentColor)
+        box-shadow 0 0 15px var(--accentColor)
         &:before
-          color #fff
+          color var(--onAccentColor)
     .select-box
       margin 0
-      padding 0.8rem 0
+      padding 0.4rem 0
       position absolute
       bottom 0rem
       right 1.5rem
       background var(--mainBg)
       border 1px solid var(--borderColor)
-      width 120px
-      border-radius 6px
-      box-shadow 0 0 15px rgba(255, 255, 255, 0.2)
+      width 210px
+      max-height 70vh
+      overflow-y auto
+      border-radius 10px
+      box-shadow 0 6px 24px rgba(0, 0, 0, 0.28)
+      text-align left
       li
         list-style none
-        line-height 2rem
-        font-size 0.95rem
+        display flex
+        align-items center
+        gap 0.6rem
+        padding 0.3rem 0.85rem
+        font-size 0.9rem
+        line-height 1.5rem
+        transition background-color 0.15s, color 0.15s
+        .sw
+          flex-shrink 0
+          display flex
+          align-items flex-end
+          gap 2px
+          width 22px
+          height 22px
+          padding 3px
+          box-sizing border-box
+          border-radius 5px
+          border 1px solid var(--borderColor)
+          i
+            display block
+            width 4px
+            height 4px
+            border-radius 50%
+        .name
+          flex 1
+          white-space nowrap
+          overflow hidden
+          text-overflow ellipsis
+        .check
+          flex-shrink 0
+          color var(--accentColor)
+          font-weight 700
         &:hover
-          color $accentColor
+          color var(--accentColor)
+          background-color rgba(150, 150, 150, 0.14)
         &.active
           background-color rgba(150, 150, 150, 0.2)
-          color $accentColor
+          color var(--accentColor)
 .mode-enter-active, .mode-leave-active
   transition all 0.3s
 .mode-enter, .mode-leave-to
