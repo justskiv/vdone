@@ -1,0 +1,168 @@
+version: '3.17'
+
+vars:
+  DOCS_DIR: docs
+  DIST_DIR: docs/.vuepress/dist
+  CACHE_DIR: docs/.vuepress/.cache
+  TEMP_DIR: docs/.vuepress/.temp
+  VUEPRESS_CLI: ./node_modules/vuepress/cli.js
+  DEV_PRELOAD: ./scripts/disable-fsevents.js
+  PREVIEW_SERVER: ./scripts/preview-server.js
+  NODE_HEAP_MB: '{{.NODE_HEAP_MB | default "4096"}}'
+  HOST: '{{.HOST | default "127.0.0.1"}}'
+  PORT: '{{.PORT | default "8080"}}'
+  PREVIEW_PORT: '{{.PREVIEW_PORT | default "4173"}}'
+  BASE_PATH: '{{.BASE_PATH | default "/vdone/"}}'
+  CHOKIDAR_USEPOLLING: '{{.CHOKIDAR_USEPOLLING | default "1"}}'
+  CHOKIDAR_INTERVAL: '{{.CHOKIDAR_INTERVAL | default "100"}}'
+
+env:
+  NODE_OPTIONS: --openssl-legacy-provider
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+    silent: true
+
+  install:
+    desc: Install dependencies from package-lock.json
+    aliases:
+      - deps
+      - setup
+    preconditions:
+      - sh: test -f package-lock.json
+        msg: package-lock.json is required for reproducible installs
+    cmds:
+      - npm ci
+
+  deps:check:
+    internal: true
+    silent: true
+    preconditions:
+      - sh: test -d node_modules
+        msg: node_modules is missing; run `task install`
+      - sh: test -f {{.VUEPRESS_CLI}}
+        msg: VuePress CLI is missing; run `task install`
+      - sh: test -f ./node_modules/.bin/vdone
+        msg: vdone CLI is missing; run `task install`
+    cmds:
+      - 'true'
+
+  check:dev:
+    internal: true
+    cmds:
+      - node utils/check.js dev
+      - node ./node_modules/.bin/vdone
+
+  check:build:
+    internal: true
+    cmds:
+      - node utils/check.js build
+      - node ./node_modules/.bin/vdone
+
+  doctor:
+    desc: Show local tool versions and project health
+    deps:
+      - deps:check
+    cmds:
+      - node --version
+      - npm --version
+      - node -p '"vuepress " + require("./node_modules/vuepress/package.json").version'
+      - node ./node_modules/.bin/vdone
+
+  dev:
+    desc: Start the VuePress dev server with hot reload
+    aliases:
+      - serve
+    deps:
+      - deps:check
+    env:
+      CHOKIDAR_USEPOLLING: '{{.CHOKIDAR_USEPOLLING}}'
+      CHOKIDAR_INTERVAL: '{{.CHOKIDAR_INTERVAL}}'
+    cmds:
+      - task: check:dev
+      - >-
+        node --require {{.DEV_PRELOAD}}
+        --max_old_space_size={{.NODE_HEAP_MB}}
+        {{.VUEPRESS_CLI}} dev {{.DOCS_DIR}}
+        --host {{.HOST}} --port {{.PORT}}
+    summary: |
+      Starts VuePress in watch mode with hot reload.
+
+      Examples:
+        task dev
+        task dev HOST=0.0.0.0 PORT=8081
+        task dev NODE_HEAP_MB=6144
+        task dev CHOKIDAR_USEPOLLING=0
+
+      Polling is enabled by default because VuePress 1 uses an old
+      watchpack/chokidar/fsevents stack that fails on modern Node
+      versions on macOS.
+
+  build:
+    desc: Build the production site
+    deps:
+      - deps:check
+    cmds:
+      - task: check:build
+      - >-
+        node --max_old_space_size={{.NODE_HEAP_MB}}
+        {{.VUEPRESS_CLI}} build {{.DOCS_DIR}}
+
+  test:
+    desc: Run project verification checks
+    aliases:
+      - verify
+      - ci
+    cmds:
+      - task: build
+    summary: |
+      This project does not define a separate test runner yet.
+      The production VuePress build is the current verification gate.
+
+  preview:
+    desc: Preview the production build locally
+    aliases:
+      - serve:prod
+    deps:
+      - build
+    cmds:
+      - >-
+        node {{.PREVIEW_SERVER}}
+        --root {{.DIST_DIR}}
+        --host {{.HOST}}
+        --port {{.PREVIEW_PORT}}
+        --base-path {{.BASE_PATH}}
+    summary: |
+      Serves the generated site from docs/.vuepress/dist.
+      BASE_PATH defaults to /vdone/ to match docs/.vuepress/config.ts.
+      Taskfile shell commands target macOS/Linux development.
+
+      Examples:
+        task preview
+        task preview HOST=0.0.0.0 PREVIEW_PORT=4174
+        task preview BASE_PATH=/
+
+  clean:
+    desc: Remove VuePress generated output and caches
+    prompt: Remove VuePress dist, cache, and temp directories?
+    cmds:
+      - rm -rf {{.DIST_DIR}} {{.CACHE_DIR}} {{.TEMP_DIR}}
+
+  rebuild:
+    desc: Clean generated files and build again
+    cmds:
+      - task: clean
+      - task: build
+
+  frontmatter:
+    desc: Run the interactive frontmatter editor
+    aliases:
+      - edit-fm
+    deps:
+      - deps:check
+    prompt: This can rewrite Markdown frontmatter. Continue?
+    cmds:
+      - node utils/editFrontmatter.js
