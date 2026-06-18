@@ -21,9 +21,9 @@ jobs:
 
     steps:
       - name: Checkout # Step 1
-        uses: actions/checkout@v4 # Checkout repo and get source code. Official actions: https://github.com/actions
+        uses: actions/checkout@v6 # Checkout repo and get source code. Official actions: https://github.com/actions
       - name: Use Node.js ${{ matrix.node-version }} # Step 2
-        uses: actions/setup-node@v3 # Install Node.js
+        uses: actions/setup-node@v6 # Install Node.js
         with:
           node-version: ${{ matrix.node-version }} # Version
           cache: npm # Cache deps via the committed package-lock.json
